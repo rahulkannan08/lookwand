@@ -1341,18 +1341,28 @@ export default function Lookbook() {
           }
           
           .bottom-filters{
-            flex-wrap:wrap; 
+            flex-wrap:nowrap; 
             gap:8px; 
-            padding:10px; 
-            bottom:12px;
+            padding:10px 12px; 
+            bottom:10px;
             transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            justify-content:center;
+            width:auto;
+            max-width:95%;
           }
           
           .chip{
             padding:8px 12px; 
-            font-size:13px;
+            font-size:12px;
             transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space:nowrap;
+            flex-shrink:0;
           }
+          
+          .chip select{
+            font-size:12px;
+          }
+        }
         }
       `}</style>
     </div>
