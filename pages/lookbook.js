@@ -700,6 +700,7 @@ export default function Lookbook() {
             <li className={categoryFilter === 'men' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'men'); handleFilterChange('brand', 'all') }}>men</li>
             <li className={categoryFilter === 'women' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'women'); handleFilterChange('brand', 'all') }}>women</li>
             <li className={categoryFilter === 'kids' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'kids'); handleFilterChange('brand', 'all') }}>kids</li>
+            <li><Link href="/catalog" style={{color: 'inherit', textDecoration: 'none'}}>📋 catalog</Link></li>
           </ul>
         </nav>
       </header>
@@ -1671,37 +1672,49 @@ export default function Lookbook() {
           
           .hero{
             flex-direction:column;
-            padding:20px 12px;
-            gap:20px;
+            padding:16px 16px;
+            gap:16px;
+            max-width:100%;
+            overflow-x:hidden;
           }
           
           .arrow-btn{
-            width:54px; 
-            height:54px;
+            width:50px; 
+            height:50px;
             position:absolute;
-            top:calc(50% - 40px);
+            top:calc(50% - 60px);
             z-index:30;
             transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           }
           
-          .left-arrow{left:8px}
-          .right-arrow{right:8px}
+          .left-arrow{left:12px}
+          .right-arrow{right:12px}
           
           .canvas-container{
             width:100%;
             max-width:100%;
+            padding:0;
           }
           
           .canvas{
             width:100%;
-            height:65vh; 
-            min-height:480px;
+            height:62vh; 
+            min-height:450px;
+            max-height:600px;
+            border-radius:12px;
             transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          }
+          
+          .main-dress-img{
+            width:100%;
+            height:100%;
+            object-fit:contain;
           }
           
           .thumbnail-gallery-outside{
             margin-top:12px;
-            padding:0 8px;
+            padding:0 10px;
+            gap:10px;
           }
           
           .right-sidebar{
@@ -1709,29 +1722,46 @@ export default function Lookbook() {
             max-width:100%;
             height:auto;
             max-height:none;
-            padding:24px 20px;
-            padding-right:20px;
+            padding:20px 16px;
+            padding-right:16px;
             box-sizing:border-box;
           }
           
           .dress-title{font-size:24px}
           .dress-price{font-size:28px}
           
-          .camera-buttons,
+          .camera-buttons{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:10px;
+          }
+          
           .size-buttons{
+            display:grid;
+            grid-template-columns:repeat(3, 1fr);
             gap:10px;
           }
           
           .camera-btn,
           .size-btn{
-            min-width:80px;
-            padding:12px 16px;
+            min-width:0;
+            padding:12px;
             font-size:14px;
+            box-sizing:border-box;
           }
           
           .color-btn{
             padding:14px;
             font-size:14px;
+            box-sizing:border-box;
+          }
+          
+          .add-cart-btn-sidebar{
+            width:100%;
+            max-width:100%;
+            padding:14px;
+            font-size:15px;
+            box-sizing:border-box;
           }
           
           .add-cart-btn{
@@ -1754,93 +1784,128 @@ export default function Lookbook() {
 
         /* Mobile Landscape */
         @media (max-width:768px){
+          *{box-sizing:border-box}
+          
+          .nav{padding:12px 16px}
+          
           .hero{
-            padding:16px 15px;
+            flex-direction:column;
+            padding:16px 16px;
             gap:16px;
           }
           
-          .arrow-btn{
-            width:48px;
-            height:48px;
-            top:calc(50% - 50px);
+          .canvas-container{
+            width:100%;
+            max-width:100%;
+            padding:0;
           }
           
-          .left-arrow{left:10px}
-          .right-arrow{right:10px}
+          .arrow-btn{
+            width:45px;
+            height:45px;
+            top:calc(50% - 60px);
+          }
+          
+          .left-arrow{left:12px}
+          .right-arrow{right:12px}
           
           .canvas{
-            height:60vh;
-            min-height:450px;
+            width:100%;
+            height:58vh;
+            min-height:420px;
+            max-height:550px;
+            border-radius:12px;
+          }
+          
+          .main-dress-img{
+            width:100%;
+            height:100%;
+            object-fit:contain;
           }
           
           .thumbnail-gallery-outside{
             gap:8px;
-            padding:0 6px;
+            padding:0 10px;
             justify-content:flex-start;
+            margin-top:10px;
           }
           
           .thumbnail-box{
-            width:65px;
-            height:85px;
+            width:70px;
+            height:90px;
           }
           
           .see-more-btn{
-            width:65px;
-            height:85px;
+            width:70px;
+            height:90px;
           }
           
           .right-sidebar{
+            width:100%;
+            max-width:100%;
             padding:20px 16px;
+            height:auto;
+            box-sizing:border-box;
           }
           
           .dress-title{font-size:22px}
           .dress-price{font-size:26px}
           
           .size-indicator{
-            font-size:12px;
-            padding:3px 10px;
+            font-size:11px;
+            padding:4px 10px;
+          }
+          
+          .option-section{
+            gap:10px;
+            margin-bottom:16px;
           }
           
           .camera-buttons{
             display:grid;
             grid-template-columns:1fr 1fr;
-            gap:8px;
+            gap:10px;
           }
           
           .size-buttons{
             display:grid;
             grid-template-columns:repeat(3, 1fr);
-            gap:8px;
+            gap:10px;
           }
           
           .camera-btn,
           .size-btn{
-            padding:10px 12px;
+            padding:12px 10px;
             font-size:13px;
             min-width:0;
             white-space:nowrap;
             font-weight:600;
+            box-sizing:border-box;
           }
           
           .color-btn{
-            padding:10px;
-            font-size:12px;
-            gap:8px;
+            padding:12px;
+            font-size:13px;
+            gap:10px;
+            box-sizing:border-box;
           }
           
           .add-cart-btn-sidebar{
-            padding:12px 16px;
+            padding:14px;
             font-size:14px;
             margin-top:16px;
             width:100%;
             max-width:100%;
+            box-sizing:border-box;
           }
         }
         
         /* Mobile Portrait */
         @media (max-width:600px){
+          *{box-sizing:border-box}
+          
           .nav{
-            padding:12px 16px;
+            padding:12px 14px;
           }
           
           .logo-text{
@@ -1848,7 +1913,7 @@ export default function Lookbook() {
           }
           
           .ai-banner{
-            padding:10px 16px;
+            padding:10px 14px;
           }
           
           .ai-text{
@@ -1856,13 +1921,19 @@ export default function Lookbook() {
           }
           
           .hero{
-            padding:12px 12px;
-            gap:12px;
+            padding:14px 14px;
+            gap:14px;
+          }
+          
+          .canvas-container{
+            max-width:100%;
+            width:100%;
+            padding:0;
           }
           
           .arrow-btn{
-            width:44px; 
-            height:44px;
+            width:42px; 
+            height:42px;
             top:calc(50% - 60px);
           }
           
@@ -1870,13 +1941,14 @@ export default function Lookbook() {
             transform:scale(1.05);
           }
           
-          .left-arrow{left:8px}
-          .right-arrow{right:8px}
+          .left-arrow{left:10px}
+          .right-arrow{right:10px}
           
           .canvas{
-            height:58vh; 
-            min-height:420px;
-            max-height:600px; 
+            width:100%;
+            height:56vh; 
+            min-height:400px;
+            max-height:520px; 
             border-radius:12px;
           }
           
@@ -1885,6 +1957,8 @@ export default function Lookbook() {
           }
           
           .main-dress-img{
+            width:100%;
+            height:100%;
             border-radius:12px;
             object-fit:contain;
           }
@@ -1908,7 +1982,7 @@ export default function Lookbook() {
           .canvas-container{
             max-width:100%;
             width:100%;
-            padding:0 4px;
+            padding:0;
           }
 
           .thumbnail-gallery-outside{
@@ -1916,7 +1990,7 @@ export default function Lookbook() {
             overflow-x:auto;
             overflow-y:hidden;
             flex-wrap:nowrap;
-            padding:8px 8px;
+            padding:10px 8px;
             -webkit-overflow-scrolling:touch;
             scrollbar-width:thin;
             scrollbar-color:rgba(232, 93, 79, 0.5) transparent;

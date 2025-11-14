@@ -40,15 +40,15 @@ export default function Home() {
     class AuroraLayer {
       constructor(index) {
         this.index = index
-        this.baseSpeed = 0.0002 + index * 0.00008
-        this.waveSpeed = 0.0008 + index * 0.00025
+        this.baseSpeed = 0.00008 + index * 0.00003
+        this.waveSpeed = 0.0003 + index * 0.0001
         this.amplitude = 80 + index * 40
         this.frequency = 0.003 + index * 0.001
         this.offset = index * Math.PI / 2.5
         this.verticalOffset = -200 + index * 60
         this.flowOffset = Math.random() * Math.PI * 2
         this.hue = 160 + index * 25
-        this.pulseSpeed = 0.0006 + index * 0.00015
+        this.pulseSpeed = 0.0003 + index * 0.00008
         this.frozenTime = 0 // Store the time when animation froze
         this.currentTime = 0 // Current animation time
       }
@@ -161,27 +161,11 @@ export default function Home() {
   return (
     <div className="landing">
       <canvas ref={canvasRef} className="aurora-canvas" />
-      <motion.div 
-        className="logo-container"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <motion.div 
-          className="logo-icon"
-          animate={{ 
-            rotate: [0, 10, -10, 10, 0],
-            scale: [1, 1.1, 1]
-          }}
-          transition={{ 
-            duration: 2,
-            repeat: Infinity,
-            repeatDelay: 3
-          }}
-        ></motion.div>
-        <h1 className="title">LookWand</h1>
+      <div className="logo-container">
+        <div className="logo-icon"></div>
+        <h1 className="title">LOOKBOOKgen</h1>
         <p className="subtitle">HUMANIZING GENERATIVE AI</p>
-      </motion.div>
+      </div>
       
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -191,15 +175,15 @@ export default function Home() {
       >
         <TypeAnimation
           sequence={[
-            'Upload Your Photos',
+            'Upload your photos',
             2000,
-            'Create AI Avatars',
+            'Create AI avatars',
             2000,
-            'Generate Fashion Content',
+            'Generate fashion content',
             2000,
-            'Transform Your Brand',
+            'Plan E-commerce Social Campaigns',
             2000,
-            'Humanize Generative AI',
+            'Faster workflow',
             2000,
           ]}
           wrapper="h2"
@@ -210,51 +194,47 @@ export default function Home() {
       </motion.div>
 
       <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="description-container"
+      >
+        <p className="description-text">
+          Upload real model photos to generate HumAI avatars for your e-commerce and socials
+        </p>
+        <p className="description-subtext">
+          Create endless fashion content for brands, influencers & creators
+        </p>
+      </motion.div>
+
+      <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
       >
         <Link href="/lookbook" className="enter-btn" aria-label="Create AI Lookbook">
           CREATE AI LOOKBOOK
         </Link>
       </motion.div>
-      
-      <motion.p 
-        className="hint"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1 }}
-      >
-        Upload model photos  Generate AI avatars  Create endless fashion content for brands, influencers & creators
-      </motion.p>
 
       <motion.div
-        className="features-preview"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
+        transition={{ duration: 0.6, delay: 0.9 }}
+        className="feature-tags"
       >
-        <motion.div 
-          className="feature-tag"
-          whileHover={{ scale: 1.1, y: -5 }}
-          transition={{ duration: 0.2 }}
-        >
-           Real People
-        </motion.div>
-        <motion.div 
-          className="feature-tag"
-          whileHover={{ scale: 1.1, y: -5 }}
-          transition={{ duration: 0.2 }}
-        >
-           AI Avatars
-        </motion.div>
-        <motion.div 
-          className="feature-tag"
-          whileHover={{ scale: 1.1, y: -5 }}
-          transition={{ duration: 0.2 }}
-        >
-           Infinite Content
-        </motion.div>
+        <span className="feature-tag">Real People</span>
+        <span className="feature-tag">HumAI</span>
+        <span className="feature-tag">Infinite Content</span>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 1.1 }}
+        className="footer-tagline"
+      >
+        <p>Customizable lookbook creator</p>
       </motion.div>
     </div>
   )
