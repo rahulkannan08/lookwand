@@ -40,15 +40,15 @@ export default function Home() {
     class AuroraLayer {
       constructor(index) {
         this.index = index
-        this.baseSpeed = 0.0003 + index * 0.0001
-        this.waveSpeed = 0.001 + index * 0.0003
+        this.baseSpeed = 0.0002 + index * 0.00008
+        this.waveSpeed = 0.0008 + index * 0.00025
         this.amplitude = 80 + index * 40
         this.frequency = 0.003 + index * 0.001
         this.offset = index * Math.PI / 2.5
         this.verticalOffset = -200 + index * 60
         this.flowOffset = Math.random() * Math.PI * 2
         this.hue = 160 + index * 25
-        this.pulseSpeed = 0.0008 + index * 0.0002
+        this.pulseSpeed = 0.0006 + index * 0.00015
         this.frozenTime = 0 // Store the time when animation froze
         this.currentTime = 0 // Current animation time
       }
