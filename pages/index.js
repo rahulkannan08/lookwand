@@ -207,6 +207,46 @@ export default function Home() {
         </p>
       </motion.div>
 
+      {/* Workflow Steps */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        className="workflow-section"
+      >
+        <div className="workflow-steps">
+          <div className="workflow-step">
+            <div className="step-icon">📸</div>
+            <div className="step-label">SHOOT</div>
+          </div>
+          <div className="workflow-arrow">→</div>
+          <div className="workflow-step">
+            <div className="step-icon">📤</div>
+            <div className="step-label">UPLOAD PHOTOS</div>
+          </div>
+          <div className="workflow-arrow">→</div>
+          <div className="workflow-step">
+            <div className="step-icon">👔</div>
+            <div className="step-label">CHOOSE POSE</div>
+          </div>
+          <div className="workflow-arrow">→</div>
+          <div className="workflow-step">
+            <div className="step-icon">🎨</div>
+            <div className="step-label">CHOOSE BACKGROUND</div>
+          </div>
+          <div className="workflow-arrow">→</div>
+          <div className="workflow-step">
+            <div className="step-icon">✨</div>
+            <div className="step-label">GENERATE</div>
+          </div>
+          <div className="workflow-arrow">→</div>
+          <div className="workflow-step">
+            <div className="step-icon">🚀</div>
+            <div className="step-label">SOCIAL CAMPAIGN<br/>or E-COMMERCE</div>
+          </div>
+        </div>
+      </motion.div>
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -215,6 +255,262 @@ export default function Home() {
         <Link href="/lookbook" className="enter-btn" aria-label="Create AI Lookbook">
           CREATE AI LOOKBOOK
         </Link>
+      </motion.div>
+
+      {/* Vision Section - Why LOOKBOOKgen */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
+        className="vision-section"
+      >
+        <div className="vision-container">
+          <motion.h2 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 1 }}
+            className="vision-title"
+          >
+            Why LOOKBOOKgen?
+          </motion.h2>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.2 }}
+            className="mission-statement"
+          >
+            <p className="mission-text">
+              OUR MISSION IS TO SOLVE THE PROBLEM OF MASS PRODUCTION IN FASHION INDUSTRY.
+            </p>
+            <p className="mission-subtext">
+              A COMBINATION OF VERSATILE TOOL AND THE TOUCH OF HUMAN CREATIVITY
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.4 }}
+            className="problem-showcase"
+          >
+            <div className="showcase-grid">
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -10 }}
+                className="showcase-item problem-item"
+              >
+                <div className="showcase-icon">📸</div>
+                <h3 className="showcase-label">Mass Production</h3>
+                <p className="showcase-desc">Traditional photoshoots are expensive, time-consuming, and wasteful</p>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -10 }}
+                className="showcase-item problem-item"
+              >
+                <div className="showcase-icon">⏰</div>
+                <h3 className="showcase-label">Slow Turnaround</h3>
+                <p className="showcase-desc">Weeks of planning, shooting, and editing for each campaign</p>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -10 }}
+                className="showcase-item problem-item"
+              >
+                <div className="showcase-icon">💰</div>
+                <h3 className="showcase-label">High Costs</h3>
+                <p className="showcase-desc">Models, photographers, studios, and post-production expenses</p>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 1.6 }}
+              className="solution-arrow"
+            >
+              <div className="arrow-down">↓</div>
+              <p className="solution-text">Our Solution</p>
+            </motion.div>
+
+            <div className="showcase-grid">
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -10 }}
+                className="showcase-item solution-item"
+              >
+                <div className="showcase-icon">✨</div>
+                <h3 className="showcase-label">AI-Powered</h3>
+                <p className="showcase-desc">Generate unlimited content with real human models</p>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -10 }}
+                className="showcase-item solution-item"
+              >
+                <div className="showcase-icon">⚡</div>
+                <h3 className="showcase-label">Instant Results</h3>
+                <p className="showcase-desc">Create professional lookbooks in minutes, not weeks</p>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -10 }}
+                className="showcase-item solution-item"
+              >
+                <div className="showcase-icon">🎨</div>
+                <h3 className="showcase-label">Human Creativity</h3>
+                <p className="showcase-desc">Full creative control with AI as your assistant</p>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.8 }}
+            className="main-message"
+          >
+            <div className="message-box">
+              <div className="message-icon">👤</div>
+              <h3 className="message-title">Our Philosophy</h3>
+              <p className="message-quote">
+                "Human above AI, not AI above human."
+              </p>
+              <p className="message-explanation">
+                We believe in empowering creators, not replacing them. 
+                Our AI enhances your vision while keeping the human touch at the heart of every creation.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Features Showcase Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 2 }}
+        className="features-showcase-section"
+      >
+        <div className="features-showcase-container">
+          <motion.h2 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 2.2 }}
+            className="features-showcase-title"
+          >
+            ALL-IN-ONE TOOL FOR CREATIVES & BRANDS
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 2.4 }}
+            className="features-showcase-subtitle"
+          >
+            Creating AI Fashion Content Based on Living People
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 2.6 }}
+            className="use-cases-grid"
+          >
+            <motion.div 
+              whileHover={{ scale: 1.03, y: -8 }}
+              className="use-case-card"
+            >
+              <div className="use-case-icon">📦</div>
+              <h3 className="use-case-title">Packshot Collections</h3>
+              <p className="use-case-desc">Use already crafted clothes or collections to create stunning visuals</p>
+            </motion.div>
+
+            <motion.div 
+              whileHover={{ scale: 1.03, y: -8 }}
+              className="use-case-card"
+            >
+              <div className="use-case-icon">📱</div>
+              <h3 className="use-case-title">Social Media Ready</h3>
+              <p className="use-case-desc">Push content to socials & online shops with one click</p>
+            </motion.div>
+
+            <motion.div 
+              whileHover={{ scale: 1.03, y: -8 }}
+              className="use-case-card"
+            >
+              <div className="use-case-icon">🔗</div>
+              <h3 className="use-case-title">B2B Integration</h3>
+              <p className="use-case-desc">Seamlessly integrate with your existing e-commerce platform</p>
+            </motion.div>
+          </motion.div>
+
+          {/* Image Gallery */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 2.8 }}
+            className="example-gallery"
+          >
+            <h3 className="gallery-title">See It In Action</h3>
+            <div className="gallery-grid">
+              {[
+                'https://drive.google.com/uc?id=1edKcLvVbJWuX93LeO3iPVf8kUVvZ3nQz',
+                'https://drive.google.com/uc?id=1zlOHWEgcQoNJ03apVwRW4hs1lGraRg9g',
+                'https://drive.google.com/uc?id=1e8iV-1v5pDPNNO7M1c1IQETmeAmPEcC5',
+                'https://drive.google.com/uc?id=1iK__fG04Mns7cXau6eaagTnr8GcrmMBR',
+                'https://drive.google.com/uc?id=1AKgn3kwr8HHhRGkYtbbyFf-QY6hV5FWq',
+                'https://drive.google.com/uc?id=13UEYsL0bwY10oSRVmLWmmddBH9kIUuHx',
+                'https://drive.google.com/uc?id=1ZytQxt6u5a1fkWBCx4U6xhbfcTtQKspQ',
+                'https://drive.google.com/uc?id=1n0KxL0UJtgq963MRMpnggZxDt4JqcHhD'
+              ].map((img, idx) => (
+                <motion.div
+                  key={idx}
+                  whileHover={{ scale: 1.08, zIndex: 10 }}
+                  className="gallery-item"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 2.8 + idx * 0.1 }}
+                >
+                  <img src={img} alt={`Example ${idx + 1}`} className="gallery-image" />
+                  <div className="gallery-overlay">
+                    <span className="overlay-text">AI Generated</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Key Benefits */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 3.6 }}
+            className="key-benefits"
+          >
+            <div className="benefit-row">
+              <div className="benefit-item">
+                <div className="benefit-number">01</div>
+                <h4 className="benefit-title">Real People</h4>
+                <p className="benefit-text">Based on living models, not generic AI avatars</p>
+              </div>
+              <div className="benefit-item">
+                <div className="benefit-number">02</div>
+                <h4 className="benefit-title">One-Click Export</h4>
+                <p className="benefit-text">Instantly publish to socials and e-commerce sites</p>
+              </div>
+              <div className="benefit-item">
+                <div className="benefit-number">03</div>
+                <h4 className="benefit-title">B2B Ready</h4>
+                <p className="benefit-text">Enterprise integration for your workflow</p>
+              </div>
+              <div className="benefit-item">
+                <div className="benefit-number">04</div>
+                <h4 className="benefit-title">Endless Content</h4>
+                <p className="benefit-text">Unlimited variations for every campaign</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </motion.div>
 
       <motion.div

@@ -1,9 +1,5 @@
 import Link from 'next/link'
-import { useState } from 'react'
-import dynamic from 'next/dynamic'
-
-// Dynamically import the 3D viewer to avoid SSR issues
-const DressViewer3D = dynamic(() => import('../components/DressViewer3D'), { ssr: false })
+import { useState, useEffect } from 'react'
 
 // Comprehensive dress collection with diverse styles, colors, and 360° poses
 const DRESSES = [
@@ -476,6 +472,17 @@ const DRESSES = [
   },
 ]
 
+// Custom background patterns
+const BACKGROUNDS = [
+  { id: 1, name: 'Gradient Wave', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', pattern: 'wave' },
+  { id: 2, name: 'Sunset Glow', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', pattern: 'dots' },
+  { id: 3, name: 'Ocean Blue', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', pattern: 'grid' },
+  { id: 4, name: 'Rose Gold', gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)', pattern: 'diagonal' },
+  { id: 5, name: 'Midnight', gradient: 'linear-gradient(135deg, #2c3e50 0%, #000000 100%)', pattern: 'stars' },
+  { id: 6, name: 'Minimal White', gradient: 'linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%)', pattern: 'none' },
+  { id: 7, name: 'Custom Color', gradient: '', pattern: 'none', isCustom: true },
+]
+
 export default function Lookbook() {
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [brandFilter, setBrandFilter] = useState('all')
@@ -490,6 +497,9 @@ export default function Lookbook() {
   const [selectedSize, setSelectedSize] = useState('')
   const [selectedColor, setSelectedColor] = useState('')
   const [currentPrice, setCurrentPrice] = useState('')
+  const [backgroundId, setBackgroundId] = useState(1)
+  const [customColor, setCustomColor] = useState('#667eea')
+  const [showColorPicker, setShowColorPicker] = useState(false)
 
   // Filter dresses based on all active filters
   const filteredDresses = DRESSES.filter(dress => {
@@ -503,6 +513,30 @@ export default function Lookbook() {
   const currentDress = filteredDresses[currentIndex]
   const brands = ['all', ...new Set(DRESSES.map(d => d.brand))]
   const sizes = ['all', 'XS', 'S', 'M', 'L', 'XL']
+  const currentBackground = BACKGROUNDS.find(bg => bg.id === backgroundId)
+  const activeBackground = currentBackground?.isCustom 
+    ? { ...currentBackground, gradient: customColor } 
+    : currentBackground
+
+  // Handle ESC key to close color picker
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && showColorPicker) {
+        setShowColorPicker(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [showColorPicker])
+
+  // Auto-select custom background when color changes
+  useEffect(() => {
+    if (showColorPicker && backgroundId !== 7) {
+      setBackgroundId(7)
+    }
+  }, [customColor, showColorPicker])
+
+
 
   const goToPrevious = () => {
     setImageLoading(true)
@@ -638,15 +672,11 @@ export default function Lookbook() {
     return colorFilters[selectedColor] || 'hue-rotate(30deg)'
   }
 
-  // Reset selectedImageIndex when dress changes
+  // Navigate between different dresses
   const goToPreviousWrapped = () => {
     setImageLoading(true)
     setCurrentIndex((prev) => (prev === 0 ? filteredDresses.length - 1 : prev - 1))
     setSelectedImageIndex(0)
-    setShowAllThumbnails(false)
-    setSelectedSize('')
-    setSelectedColor('')
-    setCurrentPrice('')
     setTimeout(() => setImageLoading(false), 300)
   }
 
@@ -654,10 +684,6 @@ export default function Lookbook() {
     setImageLoading(true)
     setCurrentIndex((prev) => (prev === filteredDresses.length - 1 ? 0 : prev + 1))
     setSelectedImageIndex(0)
-    setShowAllThumbnails(false)
-    setSelectedSize('')
-    setSelectedColor('')
-    setCurrentPrice('')
     setTimeout(() => setImageLoading(false), 300)
   }
 
@@ -672,35 +698,53 @@ export default function Lookbook() {
 
   return (
     <div className="page-root">
-      {/* AI Info Banner */}
+      {/* Animated AI Info Banner */}
       <div className="ai-banner">
-        <span className="ai-icon">🪄</span>
-        <p className="ai-text">Generate AI avatars and fashion content from your uploaded photos</p>
+        <span className="ai-icon">✨</span>
+        <p className="ai-text">AI-Powered Fashion Showcase • Interactive 360° Views • Virtual Try-On</p>
+        <span className="ai-icon">🎨</span>
       </div>
       
+      {/* Enhanced Header with Search */}
       <header className="topbar">
         <nav className="nav">
           <div className="nav-left">
             <div className="logo-wrapper">
+              <span className="logo-icon">👗</span>
               <span className="logo-text">LookWand</span>
             </div>
-            <input 
-              type="text" 
-              className="search" 
-              placeholder="Search dresses..."
-              value={searchQuery}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
-            />
+            <div className="search-wrapper">
+              <span className="search-icon">🔍</span>
+              <input 
+                type="text" 
+                className="search" 
+                placeholder="Search styles, colors, brands..."
+                value={searchQuery}
+                onChange={(e) => handleFilterChange('search', e.target.value)}
+              />
+            </div>
           </div>
           <ul className="nav-items">
-            <li className={brandFilter === 'all' && categoryFilter === 'all' ? 'active' : ''} onClick={() => { handleFilterChange('brand', 'all'); handleFilterChange('category', 'all') }}>all</li>
+            <li className={brandFilter === 'all' && categoryFilter === 'all' ? 'active' : ''} onClick={() => { handleFilterChange('brand', 'all'); handleFilterChange('category', 'all') }}>
+              <span className="nav-emoji">✨</span> all
+            </li>
             {brands.filter(b => b !== 'all').map(brand => (
-              <li key={brand} className={brandFilter === brand ? 'active' : ''} onClick={() => { handleFilterChange('brand', brand); handleFilterChange('category', 'all') }}>{brand}</li>
+              <li key={brand} className={brandFilter === brand ? 'active' : ''} onClick={() => { handleFilterChange('brand', brand); handleFilterChange('category', 'all') }}>
+                {brand}
+              </li>
             ))}
-            <li className={categoryFilter === 'men' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'men'); handleFilterChange('brand', 'all') }}>men</li>
-            <li className={categoryFilter === 'women' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'women'); handleFilterChange('brand', 'all') }}>women</li>
-            <li className={categoryFilter === 'kids' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'kids'); handleFilterChange('brand', 'all') }}>kids</li>
-            <li><Link href="/catalog" style={{color: 'inherit', textDecoration: 'none'}}>📋 catalog</Link></li>
+            <li className={categoryFilter === 'men' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'men'); handleFilterChange('brand', 'all') }}>
+              <span className="nav-emoji">👔</span> men
+            </li>
+            <li className={categoryFilter === 'women' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'women'); handleFilterChange('brand', 'all') }}>
+              <span className="nav-emoji">👗</span> women
+            </li>
+            <li className={categoryFilter === 'kids' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'kids'); handleFilterChange('brand', 'all') }}>
+              <span className="nav-emoji">🎈</span> kids
+            </li>
+            <li><Link href="/catalog" style={{color: 'inherit', textDecoration: 'none'}}>
+              <span className="nav-emoji">📋</span> catalog
+            </Link></li>
           </ul>
         </nav>
       </header>
@@ -708,169 +752,245 @@ export default function Lookbook() {
       <main className="hero">
         {filteredDresses.length === 0 ? (
           <div className="no-results">
-            <p>No dresses found matching your filters.</p>
+            <div className="no-results-icon">😔</div>
+            <p>No items found matching your filters.</p>
             <button className="reset-btn" onClick={() => { setCategoryFilter('all'); setBrandFilter('all'); setSizeFilter('all'); setSearchQuery(''); setCurrentIndex(0) }}>
-              Reset All Filters
+              🔄 Reset All Filters
             </button>
           </div>
         ) : (
           <>
             {/* Left Arrow */}
             <div className="arrow-btn left-arrow" onClick={goToPreviousWrapped}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6"></polyline>
               </svg>
             </div>
 
-            {/* Canvas and Thumbnail Container */}
-            <div className="canvas-container">
-              {/* Main Canvas with Dress Display */}
-              <div className="canvas">
-                <div className={`dress-display ${imageLoading ? 'loading' : ''}`}>
-                  <img 
-                    src={getCurrentImage()} 
-                    alt={`${currentDress.name} - view ${selectedImageIndex + 1}`}
-                    className="main-dress-img"
-                    style={{ 
-                      filter: getColorFilter(), 
-                      transition: 'filter 0.3s ease' 
-                    }}
-                  />
-
-                  {/* Progress indicator */}
-                  <div className="progress-indicator">
-                    {currentIndex + 1} / {filteredDresses.length}
-                  </div>
+            {/* Main Content Area with Custom Background */}
+            <div className="content-wrapper">
+              {/* Background Selector */}
+              <div className="background-selector">
+                <div className="bg-label">🎨 Background:</div>
+                <div className="bg-options">
+                  {BACKGROUNDS.map(bg => (
+                    <div
+                      key={bg.id}
+                      className={`bg-option ${backgroundId === bg.id ? 'active' : ''} ${bg.isCustom ? 'custom-color-option' : ''}`}
+                      style={{ background: bg.isCustom ? customColor : bg.gradient }}
+                      onClick={() => {
+                        console.log('Background clicked:', bg.name, 'isCustom:', bg.isCustom)
+                        setBackgroundId(bg.id)
+                        if (bg.isCustom) {
+                          console.log('Opening color picker')
+                          setShowColorPicker(prev => !prev)
+                        } else {
+                          setShowColorPicker(false)
+                        }
+                      }}
+                      title={bg.name}
+                    >
+                      {bg.isCustom ? (
+                        <span className="color-picker-icon">🎨</span>
+                      ) : (
+                        backgroundId === bg.id && <span className="bg-check">✓</span>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Thumbnail Gallery - Horizontal with See More */}
-              <div className="thumbnail-gallery-outside">
-                {(() => {
-                  const allImages = getAllImages(currentDress)
-                  const visibleCount = showAllThumbnails ? allImages.length : Math.min(5, allImages.length)
-                  const hasMore = allImages.length > 5
+              {/* Canvas Container with Dynamic Background */}
+              <div className="canvas-container" style={{ background: activeBackground.gradient }}>
+                <div className={`background-pattern pattern-${currentBackground.pattern}`}></div>
+                
+                {/* Main Canvas */}
+                <div className="canvas">
+                  <div className={`dress-display ${imageLoading ? 'loading' : ''}`}>
+                    <img 
+                      src={getCurrentImage()} 
+                      alt={`${currentDress.name} - view ${selectedImageIndex + 1}`}
+                      className="main-dress-img"
+                      style={{ 
+                        filter: getColorFilter(), 
+                        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)' 
+                      }}
+                    />
 
-                  return (
-                    <>
-                      {allImages.slice(0, visibleCount).map((imageData, index) => (
+                    {/* Enhanced Progress indicator */}
+                    <div className="progress-indicator">
+                      <span className="progress-number">{currentIndex + 1}</span>
+                      <span className="progress-separator">/</span>
+                      <span className="progress-total">{filteredDresses.length}</span>
+                    </div>
+
+
+                  </div>
+                </div>
+
+                {/* Enhanced Carousel Thumbnail Gallery */}
+                <div className="carousel-wrapper">
+                  <div className="carousel-header">
+                    <span className="carousel-title">📸 All Poses & Angles</span>
+                    <button 
+                      className="carousel-toggle"
+                      onClick={() => setShowAllThumbnails(!showAllThumbnails)}
+                    >
+                      {showAllThumbnails ? '▼ Show Less' : `▶ Show All (${getAllImages(currentDress).length})`}
+                    </button>
+                  </div>
+                  
+                  <div className={`thumbnail-carousel ${showAllThumbnails ? 'expanded' : ''}`}>
+                    {(() => {
+                      const allImages = getAllImages(currentDress)
+                      const visibleCount = showAllThumbnails ? allImages.length : Math.min(6, allImages.length)
+
+                      return allImages.slice(0, visibleCount).map((imageData, index) => (
                         <div
                           key={index}
-                          className={`thumbnail-box ${selectedImageIndex === index ? 'active' : ''}`}
+                          className={`carousel-item ${selectedImageIndex === index ? 'active' : ''}`}
                           onClick={() => handleThumbnailClick(index, imageData)}
                         >
-                          <img src={imageData.url} alt={`View ${index + 1}`} />
-                          <div className="thumbnail-number">{index + 1}</div>
-                        </div>
-                      ))}
-                      
-                      {hasMore && (
-                        <button 
-                          className="see-more-btn"
-                          onClick={() => setShowAllThumbnails(!showAllThumbnails)}
-                        >
-                          {showAllThumbnails ? (
-                            <>
-                              <span>Show Less</span>
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                                <polyline points="18 15 12 9 6 15"></polyline>
-                              </svg>
-                            </>
-                          ) : (
-                            <>
-                              <span>+{allImages.length - 5}</span>
-                              <div className="see-more-text">More</div>
-                            </>
+                          <img src={imageData.url} alt={`Pose ${index + 1}`} />
+                          <div className="carousel-overlay">
+                            <span className="carousel-number">#{index + 1}</span>
+                          </div>
+                          {selectedImageIndex === index && (
+                            <div className="carousel-active-ring"></div>
                           )}
+                        </div>
+                      ))
+                    })()}
+                  </div>
+                </div>
+              </div>
+
+              {/* Enhanced Right Sidebar */}
+              <div className="right-sidebar">
+                <div className="sidebar-header">
+                  <h2 className="dress-title">
+                    {currentDress.name}
+                    <span className="title-sparkle">✨</span>
+                  </h2>
+                  <div className="dress-brand-badge">{currentDress.brand}</div>
+                </div>
+
+                <p className="dress-description">{currentDress.description}</p>
+
+                <div className="price-section">
+                  <div className="price-container">
+                    <span className="price-label">Price:</span>
+                    <div className="dress-price">{currentPrice || currentDress.price}</div>
+                  </div>
+                  {selectedSize && (
+                    <div className="size-indicator">
+                      <span className="size-icon">📏</span> Size: {selectedSize}
+                    </div>
+                  )}
+                  {selectedColor && selectedColor !== currentDress.color && (
+                    <div className="color-indicator">
+                      <span className="color-icon">🎨</span> Color: {selectedColor}
+                    </div>
+                  )}
+                </div>
+
+                {/* Camera View Selector */}
+                <div className="option-section">
+                  <div className="option-label">
+                    <span className="label-icon">📷</span>
+                    Camera Angle
+                  </div>
+                  <div className="camera-buttons">
+                    <button 
+                      className={`camera-btn ${currentAngle === 'front' ? 'active' : ''}`}
+                      onClick={() => changeAngle('front')}
+                    >
+                      <span className="btn-icon">👁️</span>
+                      Front
+                    </button>
+                    <button 
+                      className={`camera-btn ${currentAngle === 'side' ? 'active' : ''}`}
+                      onClick={() => changeAngle('side')}
+                    >
+                      <span className="btn-icon">↔️</span>
+                      Side
+                    </button>
+                    <button 
+                      className={`camera-btn ${currentAngle === 'back' ? 'active' : ''}`}
+                      onClick={() => changeAngle('back')}
+                    >
+                      <span className="btn-icon">🔙</span>
+                      Back
+                    </button>
+                  </div>
+                </div>
+
+                {/* Size Selector */}
+                {currentDress.availableSizes && currentDress.availableSizes.length > 0 && (
+                  <div className="option-section">
+                    <div className="option-label">
+                      <span className="label-icon">📐</span>
+                      Select Size
+                    </div>
+                    <div className="size-buttons">
+                      {currentDress.availableSizes.map(size => (
+                        <button 
+                          key={size}
+                          className={`size-btn ${(selectedSize || currentDress.size) === size ? 'active' : ''}`}
+                          onClick={() => handleSizeChange(size)}
+                        >
+                          {size}
                         </button>
-                      )}
-                    </>
-                  )
-                })()}
-              </div>
-            </div>
-
-            {/* Right Sidebar with Options */}
-            <div className="right-sidebar">
-              <h2 className="dress-title">{currentDress.name}</h2>
-              <p className="dress-description">{currentDress.description}</p>
-              <div className="dress-brand">{currentDress.brand}</div>
-              <div className="price-container">
-                <div className="dress-price">{currentPrice || currentDress.price}</div>
-                {selectedSize && (
-                  <div className="size-indicator">Size: {selectedSize}</div>
+                      ))}
+                    </div>
+                  </div>
                 )}
-              </div>
 
-              {/* Camera View Selector */}
-              <div className="option-section">
-                <div className="option-label">Camera View</div>
-                <div className="camera-buttons">
-                  <button 
-                    className={`camera-btn ${currentAngle === 'front' ? 'active' : ''}`}
-                    onClick={() => changeAngle('front')}
-                  >
-                    Front
-                  </button>
-                  <button 
-                    className={`camera-btn ${currentAngle === 'side' ? 'active' : ''}`}
-                    onClick={() => changeAngle('side')}
-                  >
-                    Side
-                  </button>
-                  <button 
-                    className={`camera-btn ${currentAngle === 'back' ? 'active' : ''}`}
-                    onClick={() => changeAngle('back')}
-                  >
-                    Back
-                  </button>
-                </div>
-              </div>
-
-              {/* Size Selector */}
-              {currentDress.availableSizes && currentDress.availableSizes.length > 0 && (
-                <div className="option-section">
-                  <div className="option-label">Select Size</div>
-                  <div className="size-buttons">
-                    {currentDress.availableSizes.map(size => (
-                      <button 
-                        key={size}
-                        className={`size-btn ${(selectedSize || currentDress.size) === size ? 'active' : ''}`}
-                        onClick={() => handleSizeChange(size)}
-                      >
-                        {size}
-                      </button>
-                    ))}
+                {/* Color Selector */}
+                {currentDress.availableColors && currentDress.availableColors.length > 0 && (
+                  <div className="option-section">
+                    <div className="option-label">
+                      <span className="label-icon">🌈</span>
+                      Available Colors
+                    </div>
+                    <div className="color-options">
+                      {currentDress.availableColors.map(color => (
+                        <button 
+                          key={color}
+                          className={`color-btn ${(selectedColor || currentDress.color) === color ? 'active' : ''}`}
+                          onClick={() => handleColorChange(color)}
+                        >
+                          <div className="color-swatch" style={{ backgroundColor: color.toLowerCase() }}></div>
+                          <span>{color}</span>
+                          {(selectedColor || currentDress.color) === color && <span className="color-check">✓</span>}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Color Selector */}
-              {currentDress.availableColors && currentDress.availableColors.length > 0 && (
-                <div className="option-section">
-                  <div className="option-label">Available Colors</div>
-                  <div className="color-options">
-                    {currentDress.availableColors.map(color => (
-                      <button 
-                        key={color}
-                        className={`color-btn ${(selectedColor || currentDress.color) === color ? 'active' : ''}`}
-                        onClick={() => handleColorChange(color)}
-                      >
-                        <div className="color-swatch" style={{ backgroundColor: color.toLowerCase() }}></div>
-                        <span>{color}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+                {/* Add to Cart */}
+                <button className="add-cart-btn-sidebar">
+                  <span className="cart-icon">🛒</span>
+                  Add to Cart
+                  <span className="cart-arrow">→</span>
+                </button>
 
-              {/* Add to Cart */}
-              <button className="add-cart-btn-sidebar">Add to Cart</button>
+                {/* Quick Actions */}
+                <div className="quick-actions">
+                  <button className="quick-action-btn">
+                    <span>❤️</span> Wishlist
+                  </button>
+                  <button className="quick-action-btn">
+                    <span>📤</span> Share
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Right Arrow */}
             <div className="arrow-btn right-arrow" onClick={goToNextWrapped}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </div>
@@ -878,1424 +998,1762 @@ export default function Lookbook() {
         )}
       </main>
 
-
-
-      {/* 3D Viewer Modal */}
-      {viewer3DOpen && currentDress && (
-        <DressViewer3D 
-          dress={currentDress} 
-          onClose={() => setViewer3DOpen(false)} 
-        />
-      )}
-
+      {/* Enhanced Footer */}
       <footer className="footer">
         <div className="footer-content">
-          <p className="footer-tagline">✨ Humanizing Generative AI for Fashion Content Creation</p>
-          <Link href="/" className="back">← Back to Home</Link>
+          <div className="footer-sparkles">✨ 🌟 ✨</div>
+          <p className="footer-tagline">Humanizing Generative AI for Fashion Content Creation</p>
+          <Link href="/" className="back">
+            <span className="back-arrow">←</span> Back to Home
+          </Link>
         </div>
       </footer>
 
+      {/* Color Picker Modal - Portal Level */}
+      {showColorPicker && (
+        <>
+          <div className="color-picker-overlay" onClick={() => setShowColorPicker(false)} />
+          <div className="color-picker-modal">
+            <div className="color-picker-header">
+              <span>🎨 Choose Your Color</span>
+              <button className="close-picker" onClick={() => setShowColorPicker(false)}>✕</button>
+            </div>
+            <div className="color-picker-content">
+              <div className="color-wheel-section">
+                <input
+                  type="color"
+                  value={customColor}
+                  onChange={(e) => setCustomColor(e.target.value)}
+                  className="color-input"
+                />
+                <div className="color-preview" style={{ background: customColor }}>
+                  <span className="preview-label">Preview</span>
+                </div>
+              </div>
+              <div className="color-code-section">
+                <label className="code-label">Color Code:</label>
+                <input
+                  type="text"
+                  value={customColor.toUpperCase()}
+                  onChange={(e) => {
+                    let value = e.target.value.toUpperCase()
+                    if (!value.startsWith('#')) {
+                      value = '#' + value
+                    }
+                    if (value.match(/^#[0-9A-F]{0,6}$/)) {
+                      setCustomColor(value)
+                    }
+                  }}
+                  onBlur={(e) => {
+                    const value = customColor
+                    if (value.length < 7) {
+                      setCustomColor(value.padEnd(7, '0'))
+                    }
+                  }}
+                  className="color-hex-input"
+                  placeholder="#667EEA"
+                  maxLength={7}
+                />
+              </div>
+            </div>
+            <div className="color-presets">
+              <div className="presets-label">Quick Colors:</div>
+              <div className="presets-grid">
+                {['#667eea', '#f093fb', '#4facfe', '#fa709a', '#2c3e50', '#ff6b6b', '#4ecdc4', '#45b7d1', '#f38181', '#aa96da', '#fcbad3', '#a8e6cf', '#ffeaa7', '#fd79a8', '#fdcb6e', '#e17055'].map(color => (
+                  <div
+                    key={color}
+                    className="preset-color"
+                    style={{ background: color }}
+                    onClick={() => setCustomColor(color)}
+                    title={color}
+                  />
+                ))}
+              </div>
+            </div>
+            <button className="apply-color-btn" onClick={() => setShowColorPicker(false)}>
+              Apply Color
+            </button>
+          </div>
+        </>
+      )}
+
       <style jsx>{`
-        * { -webkit-tap-highlight-color: transparent; }
-        
-        .page-root { 
-          min-height:100vh; 
-          display:flex; 
-          flex-direction:column; 
-          background:#f7f7f9; 
-          padding-bottom:80px;
-          overflow-x:hidden;
-        }
-        
-        .ai-banner{
-          background:linear-gradient(135deg, #E85D4F 0%, #F47C3C 50%, #D94C3D 100%);
-          color:white;
-          padding:12px 20px;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          gap:10px;
-          animation:slideDown 0.5s ease-out;
-          box-shadow:0 2px 8px rgba(232, 93, 79, 0.2);
-        }
-        
-        @keyframes slideDown{
-          from{transform:translateY(-100%); opacity:0}
-          to{transform:translateY(0); opacity:1}
-        }
-        
-        .ai-icon{
-          font-size:20px;
-          animation:rotate 3s ease-in-out infinite;
-        }
-        
-        @keyframes rotate{
-          0%, 100%{transform:rotate(0deg)}
-          50%{transform:rotate(15deg)}
-        }
-        
-        .ai-text{
-          margin:0;
-          font-size:14px;
-          font-weight:600;
-          text-shadow:0 1px 3px rgba(0,0,0,0.2);
-        }
-        
-        .topbar{
-          position:sticky; 
-          top:0; 
-          background:white; 
-          box-shadow:0 2px 8px rgba(0,0,0,0.08); 
-          z-index:100;
-          transition:box-shadow 0.3s ease;
-        }
-        
-        .topbar:hover{
-          box-shadow:0 4px 12px rgba(0,0,0,0.12);
-        }
-        
-        .nav{
-          max-width:1400px; 
-          margin:0 auto; 
-          display:flex; 
-          align-items:center; 
-          justify-content:space-between;
-          padding:14px 20px; 
-          gap:16px;
-        }
-        
-        .nav-left{display:flex; align-items:center; gap:16px}
-        
-        .logo-wrapper{
-          display:flex;
-          align-items:center;
-          gap:8px;
-        }
-        
-        .logo-text{
-          font-size:24px;
-          font-weight:800;
-          background:linear-gradient(135deg, #E85D4F 0%, #F47C3C 50%, #D94C3D 100%);
-          -webkit-background-clip:text;
-          background-clip:text;
-          -webkit-text-fill-color:transparent;
-          letter-spacing:-0.5px;
-          animation:gradientShift 3s ease-in-out infinite;
-          cursor:default;
-        }
-        
-        @keyframes gradientShift{
-          0%, 100%{filter:hue-rotate(0deg)}
-          50%{filter:hue-rotate(10deg)}
-        }
-        
-        .nav-left .search{
-          padding:10px 14px;
-          border-radius:8px;
-          border:1px solid #ddd;
-          background:#f9fafb; 
-          width:240px; 
-          transition:all 0.3s ease;
-          font-size:14px;
-        }
-        .nav-left .search:focus{
-          outline:none; 
-          border-color:#E85D4F; 
-          background:#fff; 
-          box-shadow:0 0 0 3px rgba(232, 93, 79, 0.1);
-          transform:scale(1.02);
-        }
-        .nav-left .search::placeholder{
-          color:#9ca3af;
-          transition:color 0.3s;
-        }
-        .nav-left .search:focus::placeholder{
-          color:#6b7280;
-        }
-        
-        .nav-items{
-          list-style:none; 
-          display:flex; 
-          gap:10px; 
-          margin:0; 
-          padding:0; 
-          flex-wrap:wrap;
-        }
-        .nav-items li{
-          padding:10px 16px;
-          border-radius:8px;
-          border:1px solid #e5e7eb;
-          background:#fff; 
-          cursor:pointer; 
-          transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-          text-transform:capitalize; 
-          font-weight:500; 
-          font-size:14px; 
-          user-select:none;
-          position:relative;
-          overflow:hidden;
-        }
-        .nav-items li::before{
-          content:'';
-          position:absolute;
-          top:0;
-          left:-100%;
-          width:100%;
-          height:100%;
-          background:linear-gradient(90deg, transparent, rgba(232, 93, 79, 0.1), transparent);
-          transition:left 0.5s;
-        }
-        .nav-items li:hover::before{
-          left:100%;
-        }
-        .nav-items li:hover{
-          background:#f9fafb; 
-          border-color:#E85D4F; 
-          transform:translateY(-2px);
-          box-shadow:0 4px 8px rgba(0,0,0,0.08);
-        }
-        .nav-items li:active{
-          transform:translateY(0);
-        }
-        .nav-items li.active{
-          background:linear-gradient(135deg, #E85D4F 0%, #F47C3C 50%, #D94C3D 100%); 
-          color:#fff; 
-          border-color:#E85D4F;
-          box-shadow:0 4px 12px rgba(232, 93, 79, 0.3);
+        * { 
+          -webkit-tap-highlight-color: transparent;
+          scroll-behavior: smooth;
         }
 
-        .hero{
-          flex:1; 
-          display:flex; 
-          align-items:center; 
-          justify-content:center; 
-          padding:40px 20px; 
-          gap:20px; 
-          position:relative;
-          max-width:1600px;
-          margin:0 auto;
+        html {
+          overflow-x: hidden;
+        }
+
+        body {
+          overscroll-behavior: none;
         }
         
-        /* Arrow Buttons */
-        .arrow-btn{
-          width:60px; 
-          height:60px; 
-          background:white; 
-          border-radius:50%; 
-          display:flex; 
-          align-items:center; 
-          justify-content:center; 
-          cursor:pointer; 
-          box-shadow:0 4px 12px rgba(0,0,0,0.1); 
-          transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          color:#111827;
-          z-index:10;
-          border:2px solid transparent;
+        @keyframes gradientFlow {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
         }
-        .arrow-btn:hover{
-          transform:scale(1.15);
-          box-shadow:0 8px 24px rgba(232, 93, 79, 0.4);
-          background:linear-gradient(135deg, #E85D4F 0%, #F47C3C 50%, #D94C3D 100%);
-          color:white;
-          border-color:rgba(255,255,255,0.3);
+        
+        @keyframes slideDown {
+          from { transform: translateY(-100%); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
         }
-        .arrow-btn:active{
-          transform:scale(1.05);
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
         }
         
         @keyframes pulse {
-          0%, 100% { box-shadow:0 4px 12px rgba(0,0,0,0.1); }
-          50% { box-shadow:0 4px 20px rgba(232, 93, 79, 0.3); }
-        }
-
-        /* Canvas Container */
-        .canvas-container{
-          display:flex;
-          flex-direction:column;
-          gap:20px;
-          flex:1;
-          max-width:700px;
-        }
-
-        /* Main Canvas */
-        .canvas{
-          width:100%;
-          height:75vh;
-          min-height:600px;
-          background:white; 
-          border-radius:16px; 
-          box-shadow:0 8px 32px rgba(0,0,0,0.12);
-          overflow:hidden;
-          position:relative;
-          transition:box-shadow 0.3s ease;
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.05); opacity: 0.8; }
         }
         
-        .canvas:hover{
-          box-shadow:0 12px 40px rgba(0,0,0,0.16);
-        }
-
-        .dress-display{
-          width:100%; 
-          height:100%; 
-          position:relative;
-          transition:opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .dress-display.loading{
-          opacity:0.7;
-          filter:blur(2px);
-        }
-
-        .main-dress-img{
-          width:100%; 
-          height:100%; 
-          object-fit:cover;
-          display:block;
-          transition:transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        @keyframes shimmer {
+          0% { background-position: -1000px 0; }
+          100% { background-position: 1000px 0; }
         }
         
-        .dress-display:not(.loading):hover .main-dress-img{
-          transform:scale(1.02);
-        }
-
-        /* Right Sidebar */
-        .right-sidebar{
-          width:350px;
-          background:white;
-          border-radius:16px;
-          padding:24px;
-          box-shadow:0 8px 32px rgba(0,0,0,0.12);
-          display:flex;
-          flex-direction:column;
-          gap:20px;
-          height:75vh;
-          min-height:600px;
-          overflow-y:auto;
-          box-sizing:border-box;
-        }
-
-        .right-sidebar::-webkit-scrollbar{
-          width:6px;
+        @keyframes rotate360 {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
         
-        .right-sidebar::-webkit-scrollbar-thumb{
-          background:rgba(232, 93, 79, 0.3);
-          border-radius:3px;
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
         }
         
-        .right-sidebar::-webkit-scrollbar-thumb:hover{
-          background:rgba(232, 93, 79, 0.5);
-        }
-
-        .right-sidebar .dress-title{
-          font-size:24px;
-          font-weight:700;
-          color:#111827;
-          margin:0 0 8px;
-        }
-
-        .dress-description{
-          font-size:14px;
-          color:#6b7280;
-          line-height:1.6;
-          margin:-10px 0 0 0;
-        }
-
-        .dress-brand{
-          display:inline-block;
-          padding:6px 12px;
-          background:rgba(232, 93, 79, 0.1);
-          color:#E85D4F;
-          border-radius:6px;
-          font-size:13px;
-          font-weight:600;
-        }
-
-        .price-container{
-          display:flex;
-          align-items:baseline;
-          gap:12px;
-          flex-wrap:wrap;
-        }
-
-        .dress-price{
-          font-size:32px;
-          font-weight:800;
-          color:#111827;
-          background:linear-gradient(135deg, #E85D4F 0%, #F47C3C 100%);
-          -webkit-background-clip:text;
-          background-clip:text;
-          -webkit-text-fill-color:transparent;
-          transition:all 0.3s ease;
-        }
-
-        .size-indicator{
-          display:inline-block;
-          padding:4px 12px;
-          background:rgba(34, 197, 94, 0.1);
-          color:#22c55e;
-          border-radius:6px;
-          font-size:13px;
-          font-weight:600;
-          animation:slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn{
-          from{opacity:0; transform:translateX(-10px)}
-          to{opacity:1; transform:translateX(0)}
-        }
-
-        /* Thumbnail Gallery - Horizontal */
-        .thumbnail-gallery-outside{
-          display:flex;
-          gap:10px;
-          padding:12px 0;
-          overflow-x:auto;
-          overflow-y:hidden;
-          align-items:center;
-          flex-wrap:wrap;
-          -webkit-overflow-scrolling:touch;
-        }
-
-        .thumbnail-gallery-outside::-webkit-scrollbar{
-          height:6px;
+        .page-root { 
+          min-height: 100vh; 
+          display: flex; 
+          flex-direction: column; 
+          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+          background-size: 400% 400%;
+          animation: gradientFlow 15s ease infinite;
+          padding-bottom: 0;
+          overflow-x: hidden;
         }
         
-        .thumbnail-gallery-outside::-webkit-scrollbar-track{
-          background:rgba(0,0,0,0.05);
-          border-radius:3px;
+        .ai-banner {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background-size: 200% 200%;
+          animation: gradientFlow 8s ease infinite;
+          color: white;
+          padding: 16px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+          position: sticky;
+          top: 0;
+          z-index: 101;
         }
         
-        .thumbnail-gallery-outside::-webkit-scrollbar-thumb{
-          background:rgba(232, 93, 79, 0.5);
-          border-radius:3px;
-          transition:background 0.2s;
+        .ai-icon {
+          font-size: 24px;
+          animation: pulse 2s ease-in-out infinite;
         }
         
-        .thumbnail-gallery-outside::-webkit-scrollbar-thumb:hover{
-          background:rgba(232, 93, 79, 0.7);
+        .ai-text {
+          margin: 0;
+          font-size: 15px;
+          font-weight: 700;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+          letter-spacing: 0.5px;
+        }
+        
+        .topbar {
+          position: sticky; 
+          top: 0; 
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+          z-index: 100;
+          transition: all 0.3s ease;
+        }
+        
+        .topbar:hover {
+          box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+        
+        .nav {
+          max-width: 1600px; 
+          margin: 0 auto; 
+          display: flex; 
+          align-items: center; 
+          justify-content: space-between;
+          padding: 16px 24px; 
+          gap: 20px;
+        }
+        
+        .nav-left {
+          display: flex; 
+          align-items: center; 
+          gap: 20px;
+        }
+        
+        .logo-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          cursor: pointer;
+          transition: transform 0.3s ease;
+        }
+        
+        .logo-wrapper:hover {
+          transform: scale(1.05);
+        }
+        
+        .logo-icon {
+          font-size: 32px;
+          animation: float 3s ease-in-out infinite;
+        }
+        
+        .logo-text {
+          font-size: 26px;
+          font-weight: 900;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          letter-spacing: -0.5px;
+        }
+        
+        .search-wrapper {
+          position: relative;
+          display: flex;
+          align-items: center;
+        }
+        
+        .search-icon {
+          position: absolute;
+          left: 12px;
+          font-size: 16px;
+          pointer-events: none;
+          z-index: 1;
+        }
+        
+        .search {
+          padding: 12px 16px 12px 40px;
+          border-radius: 12px;
+          border: 2px solid transparent;
+          background: #f8f9fa; 
+          width: 280px; 
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          font-size: 14px;
+          font-weight: 500;
+        }
+        
+        .search:focus {
+          outline: none; 
+          border-color: #667eea; 
+          background: #fff; 
+          box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+          transform: scale(1.02);
+          width: 320px;
+        }
+        
+        .nav-items {
+          list-style: none; 
+          display: flex; 
+          gap: 12px; 
+          margin: 0; 
+          padding: 0; 
+          flex-wrap: wrap;
+        }
+        
+        .nav-items li {
+          padding: 10px 18px;
+          border-radius: 12px;
+          background: #fff; 
+          cursor: pointer; 
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+          text-transform: capitalize; 
+          font-weight: 600; 
+          font-size: 14px; 
+          user-select: none;
+          border: 2px solid transparent;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        
+        .nav-emoji {
+          font-size: 16px;
+        }
+        
+        .nav-items li:hover {
+          background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+          border-color: #667eea; 
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .nav-items li.active {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+          color: #fff; 
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+          transform: translateY(-2px);
         }
 
-        .thumbnail-box{
-          position:relative;
-          width:70px;
-          height:90px;
-          border-radius:8px;
-          overflow:hidden;
-          cursor:pointer;
-          border:3px solid #e5e7eb;
-          transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          background:#fff;
-          box-shadow:0 2px 8px rgba(0,0,0,0.08);
-          flex-shrink:0;
+        .hero {
+          flex: 1; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          padding: 30px 20px; 
+          gap: 24px; 
+          position: relative;
+          max-width: 1800px;
+          margin: 0 auto;
+          width: 100%;
+        }
+        
+        .arrow-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 64px; 
+          height: 64px; 
+          background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+          border-radius: 50%; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          cursor: pointer; 
+          box-shadow: 0 6px 20px rgba(0,0,0,0.15); 
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          color: #667eea;
+          z-index: 10;
+          border: 3px solid transparent;
         }
 
-        .thumbnail-box img{
-          width:100%;
-          height:100%;
-          object-fit:cover;
-          transition:transform 0.3s ease;
+        .left-arrow {
+          left: 20px;
         }
 
-        .thumbnail-box:hover img{
-          transform:scale(1.1);
+        .right-arrow {
+          right: 20px;
+        }
+        
+        .arrow-btn:hover {
+          transform: translateY(-50%) scale(1.2);
+          box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-color: rgba(255,255,255,0.3);
+        }
+        
+        .arrow-btn:active {
+          transform: translateY(-50%) scale(1.1);
         }
 
-        .thumbnail-box:hover{
-          border-color:#E85D4F;
-          box-shadow:0 4px 16px rgba(232, 93, 79, 0.4);
-          transform:translateY(-3px);
+        .content-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          flex: 1;
+          max-width: 1400px;
+          width: 100%;
         }
 
-        .thumbnail-box.active{
-          border-color:#E85D4F;
-          border-width:3px;
-          box-shadow:0 0 0 3px rgba(232, 93, 79, 0.2), 0 6px 20px rgba(232, 93, 79, 0.5);
-          transform:scale(1.08);
+        .background-selector {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          padding: 16px 24px;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          border-radius: 16px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+          position: relative;
         }
 
-        .thumbnail-number{
-          position:absolute;
-          top:4px;
-          left:4px;
-          background:rgba(0,0,0,0.85);
-          color:white;
-          padding:3px 8px;
-          border-radius:5px;
-          font-size:12px;
-          font-weight:700;
-          backdrop-filter:blur(4px);
-          line-height:1.3;
+        .bg-label {
+          font-size: 15px;
+          font-weight: 700;
+          color: #374151;
         }
 
-        .thumbnail-box.active .thumbnail-number{
-          background:linear-gradient(135deg, #E85D4F 0%, #F47C3C 100%);
+        .bg-options {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
         }
 
-        /* See More Button */
-        .see-more-btn{
-          width:70px;
-          height:90px;
-          border-radius:8px;
-          border:3px dashed #E85D4F;
-          background:rgba(232, 93, 79, 0.05);
-          cursor:pointer;
-          display:flex;
-          flex-direction:column;
-          align-items:center;
-          justify-content:center;
-          gap:4px;
-          transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          font-weight:700;
-          color:#E85D4F;
-          flex-shrink:0;
-          position:relative;
+        .bg-option {
+          width: 50px;
+          height: 50px;
+          border-radius: 12px;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 3px solid transparent;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .see-more-btn span{
-          font-size:18px;
-          font-weight:800;
+        .bg-option:hover {
+          transform: scale(1.15) translateY(-3px);
+          box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
-        .see-more-text{
-          font-size:11px;
-          text-transform:uppercase;
-          letter-spacing:0.5px;
+        .bg-option.active {
+          border-color: #fff;
+          box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.3), 0 6px 20px rgba(0,0,0,0.3);
+          transform: scale(1.15);
         }
 
-        .see-more-btn:hover{
-          background:rgba(232, 93, 79, 0.1);
-          border-color:#D94C3D;
-          transform:translateY(-3px);
-          box-shadow:0 4px 16px rgba(232, 93, 79, 0.3);
+        .bg-check {
+          font-size: 20px;
+          color: #fff;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+          font-weight: 900;
         }
 
-        .see-more-btn:active{
-          transform:translateY(-1px);
+        .custom-color-option {
+          position: relative;
+          overflow: hidden;
+          border: 3px solid white;
+          background: conic-gradient(from 0deg, 
+            #ff0000 0deg, 
+            #ff8800 45deg, 
+            #ffff00 90deg, 
+            #00ff00 135deg, 
+            #00ffff 180deg, 
+            #0088ff 225deg, 
+            #8800ff 270deg, 
+            #ff00ff 315deg, 
+            #ff0000 360deg) !important;
         }
 
-        .see-more-btn svg{
-          margin-top:-2px;
+        .custom-color-option::after {
+          content: '';
+          position: absolute;
+          inset: 30%;
+          background: white;
+          border-radius: 50%;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
-        .option-section{
-          display:flex;
-          flex-direction:column;
-          gap:10px;
-          box-sizing:border-box;
+        .custom-color-option:hover {
+          transform: scale(1.15) translateY(-3px);
+          box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5), 0 6px 20px rgba(0,0,0,0.3);
         }
 
-        .option-label{
-          font-size:13px;
-          font-weight:600;
-          color:#374151;
-          text-transform:uppercase;
-          letter-spacing:0.5px;
+        .color-picker-icon {
+          position: relative;
+          z-index: 2;
+          font-size: 20px;
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+          animation: colorPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes colorPulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.15); }
+        }
+
+        .color-picker-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.6);
+          backdrop-filter: blur(8px);
+          z-index: 9998;
+          animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        .color-picker-modal {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: white;
+          border-radius: 20px;
+          padding: 28px;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+          z-index: 9999;
+          min-width: 420px;
+          max-width: 90vw;
+          animation: slideInModal 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideInModal {
+          from { 
+            opacity: 0; 
+            transform: translate(-50%, -45%);
+          }
+          to { 
+            opacity: 1; 
+            transform: translate(-50%, -50%);
+          }
+        }
+
+        .color-picker-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 24px;
+          padding-bottom: 16px;
+          border-bottom: 2px solid #e5e7eb;
+        }
+
+        .color-picker-header span {
+          font-size: 18px;
+          font-weight: 700;
+          color: #1f2937;
+        }
+
+        .close-picker {
+          background: none;
+          border: none;
+          font-size: 24px;
+          color: #6b7280;
+          cursor: pointer;
+          width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 8px;
+          transition: all 0.2s ease;
+        }
+
+        .close-picker:hover {
+          background: #f3f4f6;
+          color: #1f2937;
+        }
+
+        .color-picker-content {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          margin-bottom: 24px;
+        }
+
+        .color-wheel-section {
+          display: flex;
+          gap: 20px;
+          align-items: center;
+        }
+
+        .color-input {
+          width: 120px;
+          height: 120px;
+          border: 4px solid #ffffff;
+          border-radius: 50%;
+          cursor: pointer;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.2), inset 0 2px 8px rgba(0,0,0,0.1);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          outline: none;
+        }
+
+        .color-input::-webkit-color-swatch-wrapper {
+          padding: 0;
+          border-radius: 50%;
+        }
+
+        .color-input::-webkit-color-swatch {
+          border: none;
+          border-radius: 50%;
+          box-shadow: inset 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .color-input::-moz-color-swatch {
+          border: none;
+          border-radius: 50%;
+        }
+
+        .color-input:hover {
+          transform: scale(1.08) rotate(5deg);
+          box-shadow: 0 12px 32px rgba(0,0,0,0.25), inset 0 2px 8px rgba(0,0,0,0.1), 0 0 0 4px rgba(102, 126, 234, 0.2);
+        }
+
+        .color-input:active {
+          transform: scale(1.02);
+        }
+
+        .color-preview {
+          flex: 1;
+          height: 120px;
+          border-radius: 16px;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.15), inset 0 2px 8px rgba(0,0,0,0.1);
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          padding: 12px;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .color-preview::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: 
+            linear-gradient(45deg, #ccc 25%, transparent 25%),
+            linear-gradient(-45deg, #ccc 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #ccc 75%),
+            linear-gradient(-45deg, transparent 75%, #ccc 75%);
+          background-size: 20px 20px;
+          background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+          opacity: 0.3;
+          z-index: 0;
+        }
+
+        .preview-label {
+          position: relative;
+          z-index: 1;
+          color: white;
+          font-weight: 600;
+          font-size: 14px;
+          text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+          background: rgba(0,0,0,0.2);
+          padding: 6px 16px;
+          border-radius: 8px;
+          backdrop-filter: blur(4px);
+        }
+
+        .color-code-section {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .code-label {
+          font-size: 14px;
+          font-weight: 600;
+          color: #374151;
+        }
+
+        .color-hex-input {
+          width: 100%;
+          padding: 14px 18px;
+          border: 2px solid #e5e7eb;
+          border-radius: 12px;
+          font-size: 18px;
+          font-weight: 600;
+          color: #1f2937;
+          font-family: 'Courier New', monospace;
+          transition: all 0.3s ease;
+          text-transform: uppercase;
+        }
+
+        .color-hex-input:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .color-presets {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid #e5e7eb;
+          margin-bottom: 20px;
+        }
+
+        .presets-label {
+          font-size: 14px;
+          font-weight: 700;
+          color: #374151;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .presets-grid {
+          display: grid;
+          grid-template-columns: repeat(8, 1fr);
+          gap: 10px;
+        }
+
+        .preset-color {
+          width: 100%;
+          aspect-ratio: 1;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          border: 3px solid transparent;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .preset-color:hover {
+          transform: scale(1.15);
+          box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+          border-color: rgba(255,255,255,0.6);
+        }
+
+        .apply-color-btn {
+          width: 100%;
+          padding: 14px 24px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .apply-color-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .apply-color-btn:active {
+          transform: translateY(0);
+        }
+
+        .canvas-container {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          flex: 1;
+          position: relative;
+          border-radius: 24px;
+          padding: 30px;
+          transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+          overflow: hidden;
+        }
+
+        .background-pattern {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0.15;
+          pointer-events: none;
+        }
+
+        .pattern-wave {
+          background: 
+            repeating-linear-gradient(
+              45deg,
+              transparent,
+              transparent 10px,
+              rgba(255,255,255,0.3) 10px,
+              rgba(255,255,255,0.3) 20px
+            );
+          animation: shimmer 20s linear infinite;
+        }
+
+        .pattern-dots {
+          background-image: radial-gradient(circle, rgba(255,255,255,0.4) 2px, transparent 2px);
+          background-size: 30px 30px;
+        }
+
+        .pattern-grid {
+          background-image: 
+            linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px);
+          background-size: 40px 40px;
+        }
+
+        .pattern-diagonal {
+          background: 
+            repeating-linear-gradient(
+              -45deg,
+              transparent,
+              transparent 15px,
+              rgba(255,255,255,0.2) 15px,
+              rgba(255,255,255,0.2) 30px
+            );
+        }
+
+        .pattern-stars {
+          background-image: 
+            radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.6), transparent),
+            radial-gradient(2px 2px at 60% 70%, rgba(255,255,255,0.6), transparent),
+            radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.4), transparent),
+            radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.4), transparent),
+            radial-gradient(2px 2px at 90% 60%, rgba(255,255,255,0.5), transparent);
+          background-size: 200% 200%;
+          animation: gradientFlow 10s ease infinite;
+        }
+
+        .canvas {
+          width: 100%;
+          height: 600px;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          border-radius: 20px; 
+          box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+          overflow: hidden;
+          position: relative;
+          transition: all 0.4s ease;
+        }
+        
+        .canvas:hover {
+          box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+          transform: translateY(-4px);
+        }
+
+        .dress-display {
+          width: 100%; 
+          height: 100%; 
+          position: relative;
+          transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .dress-display.loading {
+          opacity: 0.6;
+        }
+
+        .main-dress-img {
+          width: 100%; 
+          height: 100%; 
+          object-fit: contain;
+          display: block;
+          transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .dress-display:not(.loading):hover .main-dress-img {
+          transform: scale(1.03);
+        }
+
+        .progress-indicator {
+          position: absolute;
+          top: 20px;
+          left: 20px;
+          background: rgba(102, 126, 234, 0.95);
+          backdrop-filter: blur(10px);
+          color: white;
+          padding: 10px 20px;
+          border-radius: 25px;
+          font-size: 14px;
+          font-weight: 700;
+          z-index: 20;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .progress-number, .progress-total {
+          font-size: 16px;
+        }
+
+        .progress-separator {
+          opacity: 0.7;
+          margin: 0 2px;
+        }
+
+
+
+        .carousel-wrapper {
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          border-radius: 20px;
+          padding: 20px;
+          box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .carousel-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 16px;
+          padding-bottom: 12px;
+          border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .carousel-title {
+          font-size: 16px;
+          font-weight: 700;
+          color: #374151;
+        }
+
+        .carousel-toggle {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 20px;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .carousel-toggle:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .thumbnail-carousel {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          gap: 12px;
+          max-height: 240px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          padding: 4px;
+          transition: max-height 0.4s ease;
+        }
+
+        .thumbnail-carousel.expanded {
+          max-height: 600px;
+        }
+
+        .thumbnail-carousel::-webkit-scrollbar {
+          width: 8px;
+        }
+        
+        .thumbnail-carousel::-webkit-scrollbar-thumb {
+          background: rgba(102, 126, 234, 0.5);
+          border-radius: 4px;
+        }
+        
+        .thumbnail-carousel::-webkit-scrollbar-thumb:hover {
+          background: rgba(102, 126, 234, 0.7);
+        }
+
+        .carousel-item {
+          position: relative;
+          aspect-ratio: 3/4;
+          border-radius: 12px;
+          overflow: hidden;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 3px solid transparent;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .carousel-item img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s ease;
+        }
+
+        .carousel-item:hover img {
+          transform: scale(1.1);
+        }
+
+        .carousel-item:hover {
+          border-color: #667eea;
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+          transform: translateY(-4px);
+        }
+
+        .carousel-item.active {
+          border-color: #667eea;
+          box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2), 0 8px 25px rgba(102, 126, 234, 0.5);
+          transform: scale(1.05);
+        }
+
+        .carousel-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 40%);
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          padding: 8px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .carousel-item:hover .carousel-overlay {
+          opacity: 1;
+        }
+
+        .carousel-number {
+          background: rgba(102, 126, 234, 0.95);
+          color: white;
+          padding: 4px 10px;
+          border-radius: 12px;
+          font-size: 12px;
+          font-weight: 700;
+        }
+
+        .carousel-active-ring {
+          position: absolute;
+          top: -4px;
+          left: -4px;
+          right: -4px;
+          bottom: -4px;
+          border: 3px solid #667eea;
+          border-radius: 14px;
+          animation: pulse 2s ease-in-out infinite;
+        }
+
+        .right-sidebar {
+          width: 400px;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          border-radius: 24px;
+          padding: 28px;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          max-height: 85vh;
+          overflow-y: auto;
+          position: sticky;
+          top: 20px;
+        }
+
+        .right-sidebar::-webkit-scrollbar {
+          width: 8px;
+        }
+        
+        .right-sidebar::-webkit-scrollbar-thumb {
+          background: rgba(102, 126, 234, 0.4);
+          border-radius: 4px;
+        }
+        
+        .right-sidebar::-webkit-scrollbar-thumb:hover {
+          background: rgba(102, 126, 234, 0.6);
+        }
+
+        .sidebar-header {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .dress-title {
+          font-size: 28px;
+          font-weight: 800;
+          color: #111827;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          line-height: 1.3;
+        }
+
+        .title-sparkle {
+          font-size: 22px;
+          animation: float 2s ease-in-out infinite;
+        }
+
+        .dress-brand-badge {
+          display: inline-block;
+          padding: 8px 16px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-radius: 20px;
+          font-size: 14px;
+          font-weight: 700;
+          width: fit-content;
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .dress-description {
+          font-size: 15px;
+          color: #6b7280;
+          line-height: 1.7;
+          margin: 0;
+        }
+
+        .price-section {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          padding: 20px;
+          background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+          border-radius: 16px;
+          border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .price-container {
+          display: flex;
+          align-items: baseline;
+          gap: 12px;
+        }
+
+        .price-label {
+          font-size: 14px;
+          color: #6b7280;
+          font-weight: 600;
+        }
+
+        .dress-price {
+          font-size: 36px;
+          font-weight: 900;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .size-indicator,
+        .color-indicator {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 14px;
+          background: rgba(34, 197, 94, 0.1);
+          color: #22c55e;
+          border-radius: 20px;
+          font-size: 13px;
+          font-weight: 700;
+          animation: slideIn 0.3s ease-out;
+        }
+
+        .color-indicator {
+          background: rgba(245, 87, 108, 0.1);
+          color: #f5576c;
+        }
+
+        @keyframes slideIn {
+          from { opacity: 0; transform: translateX(-10px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+
+        .option-section {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .option-label {
+          font-size: 14px;
+          font-weight: 700;
+          color: #374151;
+          text-transform: uppercase;
+          letter-spacing: 0.8px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .label-icon {
+          font-size: 18px;
         }
 
         .camera-buttons,
-        .size-buttons{
-          display:flex;
-          gap:8px;
-          flex-wrap:wrap;
+        .size-buttons {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
         }
 
         .camera-btn,
-        .size-btn{
-          flex:1;
-          padding:10px 16px;
-          background:#f9fafb;
-          border:2px solid #e5e7eb;
-          border-radius:8px;
-          font-size:14px;
-          font-weight:500;
-          color:#374151;
-          cursor:pointer;
-          transition:all 0.2s ease;
-          box-sizing:border-box;
+        .size-btn {
+          flex: 1;
+          min-width: 90px;
+          padding: 12px 16px;
+          background: #f9fafb;
+          border: 2px solid #e5e7eb;
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 600;
+          color: #374151;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+        }
+
+        .btn-icon {
+          font-size: 16px;
         }
 
         .camera-btn:hover,
-        .size-btn:hover{
-          background:#fff;
-          border-color:#E85D4F;
-          transform:translateY(-1px);
+        .size-btn:hover {
+          background: #fff;
+          border-color: #667eea;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
         .camera-btn.active,
-        .size-btn.active{
-          background:linear-gradient(135deg, #E85D4F 0%, #F47C3C 100%);
-          color:white;
-          border-color:transparent;
-          box-shadow:0 2px 8px rgba(232, 93, 79, 0.3);
+        .size-btn.active {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-color: transparent;
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .color-options{
-          display:flex;
-          flex-direction:column;
-          gap:8px;
+        .color-options {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
         }
 
-        .color-btn{
-          display:flex;
-          align-items:center;
-          gap:12px;
-          padding:12px;
-          background:#f9fafb;
-          border:2px solid #e5e7eb;
-          border-radius:8px;
-          font-size:14px;
-          font-weight:500;
-          color:#374151;
-          cursor:pointer;
-          transition:all 0.2s ease;
-          box-sizing:border-box;
+        .color-btn {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 14px 16px;
+          background: #f9fafb;
+          border: 2px solid #e5e7eb;
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 600;
+          color: #374151;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .color-btn:hover{
-          background:#fff;
-          border-color:#E85D4F;
-          transform:translateX(3px);
+        .color-btn:hover {
+          background: #fff;
+          border-color: #667eea;
+          transform: translateX(4px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
-        .color-btn.active{
-          background:#fff;
-          border-color:#E85D4F;
-          box-shadow:0 2px 8px rgba(232, 93, 79, 0.2);
+        .color-btn.active {
+          background: #fff;
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .color-swatch{
-          width:24px;
-          height:24px;
-          border-radius:50%;
-          border:2px solid rgba(0,0,0,0.1);
-          flex-shrink:0;
+        .color-swatch {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          border: 2px solid rgba(0,0,0,0.1);
+          flex-shrink: 0;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
-        .add-cart-btn-sidebar{
-          width:100%;
-          padding:16px 20px;
-          background:#111827;
-          color:white;
-          border:none;
-          border-radius:10px;
-          font-size:15px;
-          font-weight:600;
-          cursor:pointer;
-          transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          margin-top:auto;
-          box-sizing:border-box;
+        .color-check {
+          margin-left: auto;
+          font-size: 18px;
+          color: #667eea;
+          font-weight: 900;
         }
 
-        .add-cart-btn-sidebar:hover{
-          background:#000;
-          transform:translateY(-2px);
-          box-shadow:0 6px 20px rgba(0,0,0,0.3);
+        .add-cart-btn-sidebar {
+          width: 100%;
+          padding: 18px 24px;
+          background: linear-gradient(135deg, #111827 0%, #374151 100%);
+          color: white;
+          border: none;
+          border-radius: 14px;
+          font-size: 16px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          margin-top: auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          box-shadow: 0 6px 20px rgba(17, 24, 39, 0.3);
         }
 
-        /* Camera Angle Widget - overlaid on image */
-        .angle-widget{
-          position:absolute;
-          top:20px;
-          right:20px;
-          background:rgba(255,255,255,0.98);
-          backdrop-filter:blur(12px);
-          border-radius:12px;
-          padding:12px;
-          box-shadow:0 4px 20px rgba(0,0,0,0.15);
-          z-index:20;
-          animation:slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-          transition:transform 0.3s ease;
-        }
-        
-        .angle-widget:hover{
-          transform:translateY(-2px);
-          box-shadow:0 6px 24px rgba(0,0,0,0.2);
+        .cart-icon {
+          font-size: 20px;
+          animation: bounce 2s ease-in-out infinite;
         }
 
-        @keyframes slideInRight{
-          from{opacity:0; transform:translateX(30px)}
-          to{opacity:1; transform:translateX(0)}
+        .cart-arrow {
+          font-size: 18px;
+          transition: transform 0.3s ease;
         }
 
-        /* Progress Indicator */
-          padding:12px 28px;
-          border-radius:8px;
-          font-weight:700;
-          cursor:pointer;
-          transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          font-size:15px;
-          box-shadow:0 2px 8px rgba(255,255,255,0.2);
+        .add-cart-btn-sidebar:hover {
+          background: linear-gradient(135deg, #000 0%, #111827 100%);
+          transform: translateY(-3px);
+          box-shadow: 0 10px 30px rgba(17, 24, 39, 0.4);
         }
 
-        .add-cart-btn:hover{
-          transform:translateY(-3px) scale(1.08);
-          box-shadow:0 6px 20px rgba(255,255,255,0.4);
-          background:linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-        }
-        
-        .add-cart-btn:active{
-          transform:translateY(-1px) scale(1.04);
+        .add-cart-btn-sidebar:hover .cart-arrow {
+          transform: translateX(4px);
         }
 
-        /* Progress Indicator */
-        .progress-indicator{
-          position:absolute;
-          top:20px;
-          left:20px;
-          background:rgba(0,0,0,0.7);
-          backdrop-filter:blur(8px);
-          color:white;
-          padding:8px 16px;
-          border-radius:20px;
-          font-size:13px;
-          font-weight:600;
-          z-index:20;
+        .quick-actions {
+          display: flex;
+          gap: 12px;
         }
 
-        /* No Results */
-        .no-results{
-          display:flex;
-          flex-direction:column;
-          align-items:center;
-          justify-content:center;
-          gap:20px;
-          padding:60px 20px;
-          color:#6b7280;
+        .quick-action-btn {
+          flex: 1;
+          padding: 12px 16px;
+          background: #f9fafb;
+          border: 2px solid #e5e7eb;
+          border-radius: 12px;
+          font-size: 13px;
+          font-weight: 600;
+          color: #374151;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
         }
 
-        .no-results p{font-size:18px; margin:0}
-
-        .reset-btn{
-          background:linear-gradient(135deg, #E85D4F 0%, #F47C3C 50%, #D94C3D 100%);
-          color:white;
-          border:none;
-          padding:12px 24px;
-          border-radius:8px;
-          cursor:pointer;
-          font-weight:600;
-          transition:all 0.2s;
+        .quick-action-btn:hover {
+          background: #fff;
+          border-color: #667eea;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
-        .reset-btn:hover{transform:translateY(-2px); box-shadow:0 4px 12px rgba(232, 93, 79, 0.3)}
+        .no-results {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 24px;
+          padding: 80px 20px;
+          color: #6b7280;
+        }
 
-        .footer{
-          padding:30px 20px; 
-          text-align:center; 
-          background:linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); 
-          border-top:2px solid #e5e7eb;
-          transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .no-results-icon {
+          font-size: 64px;
+          animation: float 3s ease-in-out infinite;
         }
-        
-        .footer:hover{
-          border-top-color:#E85D4F;
-          box-shadow:0 -4px 12px rgba(232, 93, 79, 0.1);
+
+        .no-results p {
+          font-size: 20px;
+          margin: 0;
+          font-weight: 600;
         }
-        
-        .footer-content{
-          display:flex;
-          flex-direction:column;
-          gap:12px;
-          align-items:center;
+
+        .reset-btn {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          padding: 14px 32px;
+          border-radius: 12px;
+          cursor: pointer;
+          font-weight: 700;
+          font-size: 15px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .reset-btn:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .footer {
+          padding: 40px 20px; 
+          text-align: center; 
+          background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+          border-top: 3px solid rgba(102, 126, 234, 0.2);
+          margin-top: 40px;
         }
         
-        .footer-tagline{
-          font-size:14px;
-          color:#6b7280;
-          font-weight:500;
-          margin:0;
-          font-style:italic;
-          animation:fadeIn 0.8s ease-out;
+        .footer-content {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          align-items: center;
+          max-width: 800px;
+          margin: 0 auto;
         }
         
-        @keyframes fadeIn{
-          from{opacity:0}
-          to{opacity:1}
+        .footer-sparkles {
+          font-size: 24px;
+          animation: float 2s ease-in-out infinite;
         }
         
-        .back{
-          color:#111827; 
-          text-decoration:none; 
-          font-weight:600; 
-          transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          display:inline-block;
-          padding:8px 16px;
-          border-radius:8px;
-          background:rgba(232, 93, 79, 0.05);
+        .footer-tagline {
+          font-size: 15px;
+          color: #6b7280;
+          font-weight: 600;
+          margin: 0;
+          font-style: italic;
         }
         
-        .back:hover{
-          color:#E85D4F;
-          transform:translateX(-4px);
-          background:rgba(232, 93, 79, 0.1);
-        }
-
-        /* Responsive */
-        /* Tablet (Portrait & Landscape) */
-        @media (max-width:1200px){
-          .hero{
-            padding:20px 15px;
-            gap:16px;
-          }
-          
-          .canvas-container{
-            max-width:700px;
-          }
-          
-          .right-sidebar{
-            width:320px;
-            padding:24px;
-          }
-          
-          .dress-title{font-size:26px}
-          .dress-price{font-size:30px}
+        .back {
+          color: #667eea; 
+          text-decoration: none; 
+          font-weight: 700; 
+          transition: all 0.3s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 20px;
+          border-radius: 12px;
+          background: rgba(102, 126, 234, 0.1);
         }
         
-        @media (max-width:900px){
-          .nav{
-            flex-direction:column; 
-            align-items:stretch; 
-            gap:12px;
-            transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          }
-          .nav-left{justify-content:stretch}
-          .nav-left .search{width:100%}
-          .nav-items{justify-content:center; flex-wrap:wrap}
-          
-          .ai-banner{
-            padding:12px 15px;
-            font-size:13px;
-          }
-          
-          .ai-icon{font-size:18px}
-          
-          .ai-text{font-size:13px}
-          
-          .hero{
-            flex-direction:column;
-            padding:16px 16px;
-            gap:16px;
-            max-width:100%;
-            overflow-x:hidden;
+        .back:hover {
+          background: rgba(102, 126, 234, 0.2);
+          transform: translateX(-4px);
+        }
+
+        .back-arrow {
+          font-size: 18px;
+          transition: transform 0.3s ease;
+        }
+
+        .back:hover .back-arrow {
+          transform: translateX(-4px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+          .hero {
+            gap: 20px;
+            padding: 24px 16px;
           }
           
-          .arrow-btn{
-            width:50px; 
-            height:50px;
-            position:absolute;
-            top:calc(50% - 60px);
-            z-index:30;
-            transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          }
-          
-          .left-arrow{left:12px}
-          .right-arrow{right:12px}
-          
-          .canvas-container{
-            width:100%;
-            max-width:100%;
-            padding:0;
-          }
-          
-          .canvas{
-            width:100%;
-            height:62vh; 
-            min-height:450px;
-            max-height:600px;
-            border-radius:12px;
-            transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          }
-          
-          .main-dress-img{
-            width:100%;
-            height:100%;
-            object-fit:contain;
-          }
-          
-          .thumbnail-gallery-outside{
-            margin-top:12px;
-            padding:0 10px;
-            gap:10px;
-          }
-          
-          .right-sidebar{
-            width:100%;
-            max-width:100%;
-            height:auto;
-            max-height:none;
-            padding:20px 16px;
-            padding-right:16px;
-            box-sizing:border-box;
-          }
-          
-          .dress-title{font-size:24px}
-          .dress-price{font-size:28px}
-          
-          .camera-buttons{
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:10px;
-          }
-          
-          .size-buttons{
-            display:grid;
-            grid-template-columns:repeat(3, 1fr);
-            gap:10px;
-          }
-          
-          .camera-btn,
-          .size-btn{
-            min-width:0;
-            padding:12px;
-            font-size:14px;
-            box-sizing:border-box;
-          }
-          
-          .color-btn{
-            padding:14px;
-            font-size:14px;
-            box-sizing:border-box;
-          }
-          
-          .add-cart-btn-sidebar{
-            width:100%;
-            max-width:100%;
-            padding:14px;
-            font-size:15px;
-            box-sizing:border-box;
-          }
-          
-          .add-cart-btn{
-            padding:10px 20px; 
-            font-size:14px;
-            transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          }
-          
-          .bottom-filters{
-            padding:10px 16px;
-            gap:10px;
-            bottom:15px;
-          }
-          
-          .chip{
-            padding:8px 14px;
-            font-size:13px;
+          .right-sidebar {
+            width: 360px;
           }
         }
 
-        /* Mobile Landscape */
-        @media (max-width:768px){
-          *{box-sizing:border-box}
-          
-          .nav{padding:12px 16px}
-          
-          .hero{
-            flex-direction:column;
-            padding:16px 16px;
-            gap:16px;
+        @media (max-width: 1200px) {
+          .content-wrapper {
+            flex-direction: column;
           }
           
-          .canvas-container{
-            width:100%;
-            max-width:100%;
-            padding:0;
+          .right-sidebar {
+            width: 100%;
+            max-height: none;
+            position: relative;
+            top: 0;
+            padding: 24px;
           }
           
-          .arrow-btn{
-            width:45px;
-            height:45px;
-            top:calc(50% - 60px);
+          .arrow-btn {
+            width: 56px;
+            height: 56px;
           }
-          
-          .left-arrow{left:12px}
-          .right-arrow{right:12px}
-          
-          .canvas{
-            width:100%;
-            height:58vh;
-            min-height:420px;
-            max-height:550px;
-            border-radius:12px;
+
+          .canvas {
+            height: 550px;
           }
-          
-          .main-dress-img{
-            width:100%;
-            height:100%;
-            object-fit:contain;
-          }
-          
-          .thumbnail-gallery-outside{
-            gap:8px;
-            padding:0 10px;
-            justify-content:flex-start;
-            margin-top:10px;
-          }
-          
-          .thumbnail-box{
-            width:70px;
-            height:90px;
-          }
-          
-          .see-more-btn{
-            width:70px;
-            height:90px;
-          }
-          
-          .right-sidebar{
-            width:100%;
-            max-width:100%;
-            padding:20px 16px;
-            height:auto;
-            box-sizing:border-box;
-          }
-          
-          .dress-title{font-size:22px}
-          .dress-price{font-size:26px}
-          
-          .size-indicator{
-            font-size:11px;
-            padding:4px 10px;
-          }
-          
-          .option-section{
-            gap:10px;
-            margin-bottom:16px;
-          }
-          
-          .camera-buttons{
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:10px;
-          }
-          
-          .size-buttons{
-            display:grid;
-            grid-template-columns:repeat(3, 1fr);
-            gap:10px;
-          }
-          
-          .camera-btn,
-          .size-btn{
-            padding:12px 10px;
-            font-size:13px;
-            min-width:0;
-            white-space:nowrap;
-            font-weight:600;
-            box-sizing:border-box;
-          }
-          
-          .color-btn{
-            padding:12px;
-            font-size:13px;
-            gap:10px;
-            box-sizing:border-box;
-          }
-          
-          .add-cart-btn-sidebar{
-            padding:14px;
-            font-size:14px;
-            margin-top:16px;
-            width:100%;
-            max-width:100%;
-            box-sizing:border-box;
+
+          .nav-items {
+            flex-wrap: wrap;
+            justify-content: center;
           }
         }
-        
-        /* Mobile Portrait */
-        @media (max-width:600px){
-          *{box-sizing:border-box}
-          
-          .nav{
-            padding:12px 14px;
+
+        @media (max-width: 900px) {
+          .nav {
+            flex-direction: column;
+            gap: 12px;
+            padding: 12px 16px;
           }
           
-          .logo-text{
-            font-size:20px;
-          }
-          
-          .ai-banner{
-            padding:10px 14px;
-          }
-          
-          .ai-text{
-            font-size:12px;
-          }
-          
-          .hero{
-            padding:14px 14px;
-            gap:14px;
-          }
-          
-          .canvas-container{
-            max-width:100%;
-            width:100%;
-            padding:0;
-          }
-          
-          .arrow-btn{
-            width:42px; 
-            height:42px;
-            top:calc(50% - 60px);
-          }
-          
-          .arrow-btn:hover{
-            transform:scale(1.05);
-          }
-          
-          .left-arrow{left:10px}
-          .right-arrow{right:10px}
-          
-          .canvas{
-            width:100%;
-            height:56vh; 
-            min-height:400px;
-            max-height:520px; 
-            border-radius:12px;
-          }
-          
-          .dress-display{
-            border-radius:12px;
-          }
-          
-          .main-dress-img{
-            width:100%;
-            height:100%;
-            border-radius:12px;
-            object-fit:contain;
-          }
-          
-          .angle-widget{
-            top:8px;
-            right:8px;
-            padding:6px;
-            border-radius:6px;
-            font-size:11px;
-          }
-          
-          .progress-indicator{
-            top:8px;
-            left:8px;
-            padding:6px 12px;
-            font-size:11px;
-            border-radius:15px;
+          .nav-left {
+            width: 100%;
+            flex-direction: column;
+            gap: 12px;
           }
 
-          .canvas-container{
-            max-width:100%;
-            width:100%;
-            padding:0;
-          }
-
-          .thumbnail-gallery-outside{
-            gap:8px;
-            overflow-x:auto;
-            overflow-y:hidden;
-            flex-wrap:nowrap;
-            padding:10px 8px;
-            -webkit-overflow-scrolling:touch;
-            scrollbar-width:thin;
-            scrollbar-color:rgba(232, 93, 79, 0.5) transparent;
+          .logo-wrapper {
+            justify-content: center;
           }
           
-          .thumbnail-gallery-outside::-webkit-scrollbar{
-            height:4px;
+          .search-wrapper {
+            width: 100%;
+          }
+
+          .search {
+            width: 100%;
+            padding: 10px 12px 10px 36px;
           }
           
-          .thumbnail-gallery-outside::-webkit-scrollbar-track{
-            background:rgba(0,0,0,0.05);
-            border-radius:2px;
+          .search:focus {
+            width: 100%;
+            transform: none;
           }
           
-          .thumbnail-gallery-outside::-webkit-scrollbar-thumb{
-            background:rgba(232, 93, 79, 0.5);
-            border-radius:2px;
+          .hero {
+            flex-direction: column;
+            padding: 12px;
+            gap: 16px;
           }
           
-          .thumbnail-gallery-outside::-webkit-scrollbar-thumb:hover{
-            background:rgba(232, 93, 79, 0.7);
-          }
-
-          .thumbnail-box{
-            width:65px;
-            height:85px;
-            border-width:2px;
-            flex-shrink:0;
-          }
-
-          .thumbnail-box.active{
-            border-width:3px;
-            transform:scale(1.08);
-            box-shadow:0 4px 12px rgba(232, 93, 79, 0.3);
-          }
-
-          .thumbnail-number{
-            font-size:10px;
-            padding:3px 7px;
-            font-weight:700;
-          }
-
-          .see-more-btn{
-            width:65px;
-            height:85px;
-            border-width:2px;
-            flex-shrink:0;
-          }
-
-          .see-more-btn span{
-            font-size:16px;
-          }
-
-          .see-more-text{
-            font-size:9px;
-            font-weight:600;
-          }
-
-          .right-sidebar{
-            width:100%;
-            max-width:100%;
-            height:auto;
-            min-height:auto;
-            max-height:none;
-            padding:20px 16px;
-            padding-right:16px;
-            overflow-y:visible;
-            overflow-x:hidden;
-            box-sizing:border-box;
-          }
-
-          .dress-title{
-            font-size:21px;
-            margin:0 0 8px;
-            line-height:1.3;
-            font-weight:700;
+          .arrow-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 30;
+            width: 52px;
+            height: 52px;
           }
           
-          .dress-brand{
-            font-size:12px;
-            padding:5px 12px;
-          }
-
-          .dress-description{
-            font-size:13px;
-            line-height:1.5;
-            margin-bottom:12px;
+          .left-arrow {
+            left: 8px;
           }
           
-          .price-container{
-            gap:10px;
-            margin:10px 0 16px;
-          }
-
-          .dress-price{
-            font-size:26px;
-            font-weight:800;
+          .right-arrow {
+            right: 8px;
           }
           
-          .size-indicator{
-            font-size:11px;
-            padding:4px 10px;
-            font-weight:700;
+          .canvas {
+            height: 450px;
+            border-radius: 16px;
           }
 
-          .option-section{
-            gap:8px;
-            margin-bottom:16px;
+          .background-selector {
+            padding: 12px 16px;
+            gap: 12px;
           }
 
-          .option-label{
-            font-size:12px;
-            margin-bottom:8px;
-            font-weight:700;
-            letter-spacing:0.5px;
+          .bg-options {
+            gap: 8px;
+            flex-wrap: wrap;
+          }
+
+          .bg-option {
+            width: 45px;
+            height: 45px;
           }
           
-          .camera-buttons{
-            grid-template-columns:1fr 1fr;
-            gap:8px;
-            margin-bottom:12px;
-          }
-          
-          .size-buttons{
-            grid-template-columns:repeat(3, 1fr);
-            gap:8px;
-            margin-bottom:12px;
+          .thumbnail-carousel {
+            grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+            gap: 8px;
+            padding: 12px;
           }
 
-          .camera-btn,
-          .size-btn{
-            padding:10px 10px;
-            font-size:12px;
-            border-radius:6px;
-            min-width:0;
-            white-space:nowrap;
-            font-weight:600;
-            letter-spacing:0.3px;
-          }
-
-          .color-btn{
-            padding:10px;
-            font-size:12px;
-            gap:10px;
-          }
-
-          .color-swatch{
-            width:20px;
-            height:20px;
-          }
-
-          .add-cart-btn-sidebar{
-            padding:12px 16px;
-            font-size:13px;
-            border-radius:8px;
-            margin-top:16px;
-            width:100%;
-            max-width:100%;
-            box-sizing:border-box;
-          }
-          
-          .footer{
-            padding:20px 16px;
-          }
-          
-          .footer-tagline{
-            font-size:12px;
+          .thumbnail-item {
+            height: 100px;
           }
         }
-        
-        /* Extra Small Devices (very small phones) */
-        @media (max-width:400px){
-          .nav{
-            padding:10px 12px;
+
+        @media (max-width: 600px) {
+          .ai-banner {
+            padding: 12px 16px;
+          }
+
+          .ai-text {
+            font-size: 11px;
+            letter-spacing: 0.3px;
+          }
+
+          .ai-icon {
+            font-size: 20px;
           }
           
-          .ai-banner{
-            padding:8px 12px;
+          .logo-text {
+            font-size: 20px;
+          }
+
+          .logo-icon {
+            font-size: 28px;
+          }
+
+          .nav-items li {
+            padding: 8px 14px;
+            font-size: 13px;
           }
           
-          .hero{
-            padding:10px 10px;
+          .canvas {
+            height: 380px;
+            border-radius: 12px;
           }
           
-          .canvas{
-            height:52vh;
-            min-height:380px;
-            max-height:500px;
+          .arrow-btn {
+            width: 44px;
+            height: 44px;
+          }
+
+          .arrow-btn svg {
+            width: 22px;
+            height: 22px;
+          }
+
+          .left-arrow {
+            left: 6px;
+          }
+
+          .right-arrow {
+            right: 6px;
+          }
+
+          .left-arrow:hover,
+          .right-arrow:hover {
+            transform: translateY(-50%) scale(1.08);
+          }
+
+          .left-arrow:active,
+          .right-arrow:active {
+            transform: translateY(-50%) scale(1.02);
           }
           
-          .arrow-btn{
-            width:40px;
-            height:40px;
+          .background-selector {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+            padding: 10px 14px;
+          }
+
+          .bg-label {
+            font-size: 14px;
+            text-align: center;
           }
           
-          .left-arrow{left:6px}
-          .right-arrow{right:6px}
-          
-          .thumbnail-gallery-outside{
-            gap:6px;
-            padding:6px 6px;
+          .bg-options {
+            justify-content: center;
+            gap: 6px;
+          }
+
+          .bg-option {
+            width: 42px;
+            height: 42px;
           }
           
-          .thumbnail-box,
-          .see-more-btn{
-            width:58px;
-            height:75px;
+          .dress-title {
+            font-size: 22px;
           }
           
-          .right-sidebar{
-            width:100%;
-            max-width:100%;
-            padding:16px 12px;
-            padding-right:12px;
-            box-sizing:border-box;
-            overflow-x:hidden;
+          .dress-price {
+            font-size: 28px;
+          }
+
+          .dress-brand {
+            font-size: 13px;
           }
           
-          .dress-title{
-            font-size:19px;
+          .right-sidebar {
+            padding: 16px;
           }
-          
-          .dress-price{
-            font-size:24px;
+
+          .size-selector, .color-selector {
+            gap: 6px;
           }
-          
-          .add-cart-btn-sidebar{
-            padding:11px 14px;
-            font-size:12px;
-            margin-top:14px;
-            width:100%;
-            max-width:100%;
+
+          .size-option, .color-option {
+            padding: 8px 12px;
+            font-size: 13px;
           }
-          
-          .camera-buttons{
-            grid-template-columns:1fr 1fr;
-            gap:6px;
+
+          .progress-indicator {
+            font-size: 15px;
+            padding: 6px 14px;
           }
-          
-          .size-buttons{
-            grid-template-columns:repeat(3, 1fr);
-            gap:6px;
+
+          .thumbnail-carousel {
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 6px;
+            padding: 10px;
           }
-          
-          .camera-btn,
-          .size-btn{
-            padding:9px 8px;
-            font-size:11px;
-            font-weight:600;
+
+          .thumbnail-item {
+            height: 90px;
+            border-radius: 8px;
           }
-          
-          .color-btn{
-            padding:9px;
-            font-size:11px;
-            gap:8px;
+
+          .color-picker-modal {
+            min-width: 300px;
+            padding: 18px;
+            max-width: 95vw;
+            border-radius: 16px;
           }
-          
-          .color-swatch{
-            width:18px;
-            height:18px;
+
+          .color-wheel-section {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+          }
+
+          .color-input {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto;
+          }
+
+          .color-preview {
+            height: 70px;
+          }
+
+          .preview-label {
+            font-size: 12px;
+            padding: 4px 12px;
+          }
+
+          .code-label {
+            font-size: 13px;
+          }
+
+          .color-hex-input {
+            font-size: 16px;
+            padding: 12px 16px;
+          }
+
+          .presets-grid {
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+          }
+
+          .color-picker-header span {
+            font-size: 15px;
+          }
+
+          .presets-label {
+            font-size: 12px;
+          }
+
+          .apply-color-btn {
+            padding: 11px 18px;
+            font-size: 14px;
+          }
+
+          .footer {
+            padding: 16px;
+          }
+
+          .back {
+            font-size: 14px;
+            padding: 10px 18px;
           }
         }
-        
-        /* Tablet Landscape Improvements */
-        @media (min-width:769px) and (max-width:1024px){
-          .hero{
-            flex-direction:row;
-            gap:20px;
+
+        @media (max-width: 400px) {
+          .canvas {
+            height: 320px;
           }
-          
-          .canvas-container{
-            flex:1.2;
+
+          .arrow-btn {
+            width: 40px;
+            height: 40px;
           }
-          
-          .canvas{
-            height:70vh;
-            min-height:500px;
+
+          .arrow-btn svg {
+            width: 20px;
+            height: 20px;
           }
-          
-          .right-sidebar{
-            width:340px;
-            height:auto;
-            max-height:70vh;
+
+          .bg-option {
+            width: 38px;
+            height: 38px;
           }
-          
-          .thumbnail-gallery-outside{
-            overflow-x:auto;
-            flex-wrap:nowrap;
-            gap:10px;
-            padding:10px 8px;
+
+          .thumbnail-carousel {
+            grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
           }
-          
-          .thumbnail-box,
-          .see-more-btn{
-            flex-shrink:0;
+
+          .thumbnail-item {
+            height: 80px;
           }
-          
-          .camera-buttons{
-            grid-template-columns:1fr 1fr;
-            gap:10px;
+
+          .color-picker-modal {
+            padding: 16px;
           }
-          
-          .size-buttons{
-            grid-template-columns:repeat(auto-fit, minmax(65px, 1fr));
-            gap:10px;
+
+          .presets-grid {
+            grid-template-columns: repeat(5, 1fr);
           }
         }
       `}</style>
