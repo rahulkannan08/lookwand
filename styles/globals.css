@@ -329,7 +329,9 @@ html{
 }
 
 .step-icon{
-  font-size:40px;
+  width:50px;
+  height:50px;
+  color:#60efff;
   transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   filter:drop-shadow(0 4px 12px rgba(96, 239, 255, 0.3));
 }
@@ -1081,7 +1083,7 @@ button, select, input{font-family:inherit}
     max-width:200px;
     padding:12px 8px;
   }
-  .step-icon{font-size:32px}
+  .step-icon{width:40px;height:40px}
   .step-label{font-size:10px}
   .workflow-arrow{
     transform:rotate(90deg);
@@ -1135,7 +1137,7 @@ button, select, input{font-family:inherit}
 @media (max-width:900px) and (min-width:601px){
   .workflow-steps{gap:8px; padding:18px}
   .workflow-step{min-width:100px; padding:14px 10px}
-  .step-icon{font-size:36px}
+  .step-icon{width:45px;height:45px}
   .step-label{font-size:10px}
   .workflow-arrow{font-size:20px}
   
@@ -1164,7 +1166,7 @@ button, select, input{font-family:inherit}
   .description-text{font-size:15px}
   .description-subtext{font-size:13px}
   .workflow-steps{padding:12px 10px}
-  .step-icon{font-size:28px}
+  .step-icon{width:35px;height:35px}
   .step-label{font-size:9px}
   .vision-container{padding:25px 16px; gap:25px}
   .vision-title{font-size:26px}

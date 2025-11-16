@@ -216,32 +216,55 @@ export default function Home() {
       >
         <div className="workflow-steps">
           <div className="workflow-step">
-            <div className="step-icon">📸</div>
+            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="35" r="25" fill="none" stroke="currentColor" strokeWidth="4"/>
+              <rect x="20" y="55" width="60" height="40" rx="5" fill="none" stroke="currentColor" strokeWidth="4"/>
+              <circle cx="50" cy="35" r="8" fill="currentColor"/>
+              <rect x="70" y="62" width="8" height="8" rx="2" fill="currentColor"/>
+            </svg>
             <div className="step-label">SHOOT</div>
           </div>
           <div className="workflow-arrow">→</div>
           <div className="workflow-step">
-            <div className="step-icon">📤</div>
+            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50 15 L50 60 M35 45 L50 60 L65 45" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+              <rect x="20" y="70" width="60" height="20" rx="3" fill="none" stroke="currentColor" strokeWidth="4"/>
+            </svg>
             <div className="step-label">UPLOAD PHOTOS</div>
           </div>
           <div className="workflow-arrow">→</div>
           <div className="workflow-step">
-            <div className="step-icon">👔</div>
+            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M30 40 Q30 20 50 20 Q70 20 70 40 L70 70 Q70 85 55 85 L45 85 Q30 85 30 70 Z" fill="none" stroke="currentColor" strokeWidth="4"/>
+              <path d="M30 40 L70 40" stroke="currentColor" strokeWidth="4"/>
+              <circle cx="40" cy="55" r="3" fill="currentColor"/>
+              <circle cx="60" cy="55" r="3" fill="currentColor"/>
+            </svg>
             <div className="step-label">CHOOSE POSE</div>
           </div>
           <div className="workflow-arrow">→</div>
           <div className="workflow-step">
-            <div className="step-icon">🎨</div>
+            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect x="15" y="15" width="70" height="70" rx="5" fill="none" stroke="currentColor" strokeWidth="4"/>
+              <circle cx="35" cy="35" r="8" fill="currentColor"/>
+              <path d="M20 70 L40 50 L55 65 L75 40 L85 50" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
             <div className="step-label">CHOOSE BACKGROUND</div>
           </div>
           <div className="workflow-arrow">→</div>
           <div className="workflow-step">
-            <div className="step-icon">✨</div>
+            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="8" fill="currentColor"/>
+              <path d="M50 20 L50 30 M80 50 L70 50 M50 80 L50 70 M20 50 L30 50" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+              <path d="M70 30 L63 37 M70 70 L63 63 M30 70 L37 63 M30 30 L37 37" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+            </svg>
             <div className="step-label">GENERATE</div>
           </div>
           <div className="workflow-arrow">→</div>
           <div className="workflow-step">
-            <div className="step-icon">🚀</div>
+            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 70 L50 20 L50 45 L75 45 L45 95 L45 70 Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
+            </svg>
             <div className="step-label">SOCIAL CAMPAIGN<br/>or E-COMMERCE</div>
           </div>
         </div>
