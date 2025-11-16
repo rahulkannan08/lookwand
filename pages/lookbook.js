@@ -713,7 +713,7 @@ export default function Lookbook() {
         <svg className="ai-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <polygon points="12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9"/>
         </svg>
-        <p className="ai-text">AI-Powered Fashion Showcase • Interactive 360° Views • Virtual Try-On</p>
+        <p className="ai-text">Real Models • AI Backgrounds • Infinite Styling Possibilities</p>
         <svg className="ai-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="10"/>
           <path d="M12 2a10 10 0 0 0 0 20 4 4 0 0 1 0-8 10 10 0 0 0 0-12z"/>

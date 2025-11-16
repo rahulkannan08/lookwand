@@ -438,10 +438,25 @@ export default function Home() {
           >
             <div className="message-box">
               <svg className="message-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="35" r="15" fill="currentColor"/>
-                <path d="M50 50 Q30 55 25 75 L75 75 Q70 55 50 50" fill="currentColor"/>
-                <circle cx="35" cy="30" r="3" fill="#fff"/>
-                <circle cx="65" cy="30" r="3" fill="#fff"/>
+                {/* Head */}
+                <ellipse cx="50" cy="28" rx="12" ry="14" fill="currentColor"/>
+                
+                {/* Neck */}
+                <rect x="46" y="40" width="8" height="6" fill="currentColor"/>
+                
+                {/* Shoulders and torso */}
+                <path d="M50 46 C35 48 28 52 26 62 L26 78 L38 78 L38 58 C38 55 42 52 50 52 C58 52 62 55 62 58 L62 78 L74 78 L74 62 C72 52 65 48 50 46 Z" fill="currentColor"/>
+                
+                {/* Arms */}
+                <path d="M26 52 L20 68 L24 70 L32 56 Z" fill="currentColor"/>
+                <path d="M74 52 L80 68 L76 70 L68 56 Z" fill="currentColor"/>
+                
+                {/* Facial features - eyes */}
+                <circle cx="44" cy="26" r="2" fill="#fff"/>
+                <circle cx="56" cy="26" r="2" fill="#fff"/>
+                
+                {/* Smile */}
+                <path d="M44 32 Q50 35 56 32" stroke="#fff" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
               </svg>
               <h3 className="message-title">Fashion Needs The Human Touch</h3>
               <p className="message-quote">
