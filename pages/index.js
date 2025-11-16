@@ -199,8 +199,8 @@ export default function Home() {
         transition={{ duration: 0.6, delay: 0.5 }}
         className="description-container"
       >
-        <p className="description-text">
-          Upload real model photos to generate HumAI avatars for your e-commerce and socials
+        <p className="description-text" style={{ whiteSpace: 'nowrap' }}>
+          Upload real model photos to generate HumAI avatars for your e-commerce&nbsp;and&nbsp;socials
         </p>
         <p className="description-subtext">
           Create endless fashion content for brands, influencers & creators
@@ -451,7 +451,12 @@ export default function Home() {
               { src: '/images/full-shot-woman-wearing-full-pink-outfit.jpg', label: 'Bold Colors', desc: 'Vibrant & Confident' },
               { src: '/images/mannn.png', label: 'Classic Elegance', desc: 'Timeless & Refined' },
               { src: '/images/gorgeous-woman-with-blonde-wavy-hair-wearing-elegant-beige-dress (1).jpg', label: 'Evening Glam', desc: 'Luxury & Sophistication' }
-            ].map((item, idx) => (
+            ].concat([
+              { src: '/images/portrait-beautiful-stylish-young-woman.jpg', label: 'Street Style', desc: 'Urban & Casual' },
+              { src: '/images/full-shot-woman-wearing-full-pink-outfit.jpg', label: 'Bold Colors', desc: 'Vibrant & Confident' },
+              { src: '/images/mannn.png', label: 'Classic Elegance', desc: 'Timeless & Refined' },
+              { src: '/images/gorgeous-woman-with-blonde-wavy-hair-wearing-elegant-beige-dress (1).jpg', label: 'Evening Glam', desc: 'Luxury & Sophistication' }
+            ]).map((item, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, scale: 0.9, y: 30 }}
@@ -459,7 +464,7 @@ export default function Home() {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ 
                   duration: 0.6, 
-                  delay: idx * 0.15,
+                  delay: (idx % 4) * 0.15,
                   ease: [0.4, 0, 0.2, 1]
                 }}
                 whileHover={{ 
@@ -518,10 +523,10 @@ export default function Home() {
           >
             <p className="mission-text">
               REDUCING CLOTHING WASTE, NOT JOBS
+              SLOW FASHION ABOVE FAST FASHION 
             </p>
             <p className="mission-subtext">
-              Market research before mass production. Test designs with real models, get feedback, produce only what sells.
-            </p>
+              Market research before mass production. Test designs with real models, get feedback, produce only what sells. In the spirit of slow fashion philosophy our technology makes the customer experience more luxurious and personal. </p>
           </motion.div>
 
           {/* Overproduction Waste Image Section */}
