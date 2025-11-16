@@ -100,10 +100,10 @@ const DRESSES = [
     brand: 'Breeze', 
     size: 'S', 
     color: 'White', 
-    price: '$89',
+    price: '$79',
     description: 'Light and breezy summer dress',
     availableSizes: ['XS', 'S', 'M', 'L'],
-    availableColors: ['White', 'Beige', 'Light Blue'],
+    availableColors: ['White', 'Beige', 'Light Blue', 'Mint'],
     images: {
       front: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800&h=1000&fit=crop',
       side: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=800&h=1000&fit=crop',
@@ -119,6 +119,8 @@ const DRESSES = [
     color: 'Floral', 
     price: '$129',
     description: 'Beautiful floral print midi dress',
+    availableSizes: ['XS', 'S', 'M', 'L', 'XL'],
+    availableColors: ['Floral Pink', 'Floral Blue', 'Floral Yellow'],
     images: {
       front: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&h=1000&fit=crop',
       side: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&h=1000&fit=crop',
@@ -211,12 +213,12 @@ const DRESSES = [
     name: 'Classic Suit Dress', 
     category: 'women', 
     brand: 'Sharp', 
-    size: 'M', 
+    size: 'L', 
     color: 'Navy', 
-    price: '$199',
+    price: '$209',
     description: 'Professional navy suit dress',
     availableSizes: ['XS', 'S', 'M', 'L', 'XL'],
-    availableColors: ['Navy', 'Black', 'Charcoal'],
+    availableColors: ['Navy', 'Black', 'Charcoal', 'Grey'],
     images: {
       front: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&h=1000&fit=crop',
       side: 'https://images.unsplash.com/photo-1566206091558-7f218b696731?w=800&h=1000&fit=crop',
@@ -232,6 +234,8 @@ const DRESSES = [
     color: 'Grey', 
     price: '$159',
     description: 'Elegant grey pencil dress for the office',
+    availableSizes: ['XS', 'S', 'M', 'L', 'XL'],
+    availableColors: ['Grey', 'Black', 'Navy'],
     images: {
       front: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&h=1000&fit=crop',
       side: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&h=1000&fit=crop',
@@ -280,6 +284,8 @@ const DRESSES = [
     color: 'Navy', 
     price: '$59',
     description: 'Comfortable navy polo shirt',
+    availableSizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    availableColors: ['Navy', 'Black', 'White', 'Grey'],
     images: {
       front: 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800&h=1000&fit=crop',
       side: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&h=1000&fit=crop',
@@ -322,6 +328,8 @@ const DRESSES = [
     color: 'Black', 
     price: '$299',
     description: 'Premium black leather jacket',
+    availableSizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    availableColors: ['Black', 'Brown', 'Dark Brown'],
     images: {
       front: 'https://images.unsplash.com/photo-1520975954732-35dd22299614?w=800&h=1000&fit=crop',
       side: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&h=1000&fit=crop',
@@ -370,6 +378,8 @@ const DRESSES = [
     color: 'Blue', 
     price: '$45',
     description: 'Cute denim overalls for kids',
+    availableSizes: ['2T', '3T', '4T', '5T', '6', '7'],
+    availableColors: ['Blue', 'Black', 'Light Wash'],
     images: {
       front: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&h=1000&fit=crop',
       side: 'https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&h=1000&fit=crop',
@@ -705,47 +715,75 @@ export default function Lookbook() {
         <span className="ai-icon">🎨</span>
       </div>
       
-      {/* Enhanced Header with Search */}
+
+      {/* Redesigned Header - Logo on Top, Horizontal Filter Navigation */}
       <header className="topbar">
-        <nav className="nav">
-          <div className="nav-left">
+        {/* Logo Section */}
+        <div className="logo-section">
+          <Link href="/" className="logo-link">
             <div className="logo-wrapper">
               <span className="logo-icon">👗</span>
               <span className="logo-text">LookWand</span>
             </div>
-            <div className="search-wrapper">
-              <span className="search-icon">🔍</span>
-              <input 
-                type="text" 
-                className="search" 
-                placeholder="Search styles, colors, brands..."
-                value={searchQuery}
-                onChange={(e) => handleFilterChange('search', e.target.value)}
-              />
-            </div>
-          </div>
-          <ul className="nav-items">
-            <li className={brandFilter === 'all' && categoryFilter === 'all' ? 'active' : ''} onClick={() => { handleFilterChange('brand', 'all'); handleFilterChange('category', 'all') }}>
-              <span className="nav-emoji">✨</span> all
-            </li>
-            {brands.filter(b => b !== 'all').map(brand => (
-              <li key={brand} className={brandFilter === brand ? 'active' : ''} onClick={() => { handleFilterChange('brand', brand); handleFilterChange('category', 'all') }}>
-                {brand}
+          </Link>
+        </div>
+
+        {/* Horizontal Category Filter Bar with Scroll */}
+        <nav className="filter-nav">
+          <button 
+            className="filter-scroll-btn left" 
+            onClick={() => {
+              const nav = document.querySelector('.filter-items-wrapper')
+              nav.scrollBy({ left: -200, behavior: 'smooth' })
+            }}
+            aria-label="Scroll left"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+
+          <div className="filter-items-wrapper">
+            <ul className="filter-items">
+              <li className={brandFilter === 'all' && categoryFilter === 'all' ? 'active' : ''} onClick={() => { handleFilterChange('brand', 'all'); handleFilterChange('category', 'all') }}>
+                <span className="filter-emoji">✨</span> All
               </li>
-            ))}
-            <li className={categoryFilter === 'men' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'men'); handleFilterChange('brand', 'all') }}>
-              <span className="nav-emoji">👔</span> men
-            </li>
-            <li className={categoryFilter === 'women' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'women'); handleFilterChange('brand', 'all') }}>
-              <span className="nav-emoji">👗</span> women
-            </li>
-            <li className={categoryFilter === 'kids' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'kids'); handleFilterChange('brand', 'all') }}>
-              <span className="nav-emoji">🎈</span> kids
-            </li>
-            <li><Link href="/catalog" style={{color: 'inherit', textDecoration: 'none'}}>
-              <span className="nav-emoji">📋</span> catalog
-            </Link></li>
-          </ul>
+              {brands.filter(b => b !== 'all').map(brand => (
+                <li key={brand} className={brandFilter === brand ? 'active' : ''} onClick={() => { handleFilterChange('brand', brand); handleFilterChange('category', 'all') }}>
+                  {brand}
+                </li>
+              ))}
+              <li className="filter-divider"></li>
+              <li className={categoryFilter === 'men' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'men'); handleFilterChange('brand', 'all') }}>
+                <span className="filter-emoji">👔</span> Men
+              </li>
+              <li className={categoryFilter === 'women' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'women'); handleFilterChange('brand', 'all') }}>
+                <span className="filter-emoji">👗</span> Women
+              </li>
+              <li className={categoryFilter === 'kids' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'kids'); handleFilterChange('brand', 'all') }}>
+                <span className="filter-emoji">🎈</span> Kids
+              </li>
+              <li className="filter-divider"></li>
+              <li>
+                <Link href="/catalog" style={{color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px'}}>
+                  <span className="filter-emoji">📋</span> Catalog
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <button 
+            className="filter-scroll-btn right" 
+            onClick={() => {
+              const nav = document.querySelector('.filter-items-wrapper')
+              nav.scrollBy({ left: 200, behavior: 'smooth' })
+            }}
+            aria-label="Scroll right"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
         </nav>
       </header>
 
@@ -760,13 +798,6 @@ export default function Lookbook() {
           </div>
         ) : (
           <>
-            {/* Left Arrow */}
-            <div className="arrow-btn left-arrow" onClick={goToPreviousWrapped}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </div>
-
             {/* Main Content Area with Custom Background */}
             <div className="content-wrapper">
               {/* Background Selector */}
@@ -801,51 +832,59 @@ export default function Lookbook() {
               </div>
 
               {/* Canvas Container with Dynamic Background */}
-              <div className="canvas-container" style={{ background: activeBackground.gradient }}>
-                <div className={`background-pattern pattern-${currentBackground.pattern}`}></div>
-                
-                {/* Main Canvas */}
-                <div className="canvas">
-                  <div className={`dress-display ${imageLoading ? 'loading' : ''}`}>
-                    <img 
-                      src={getCurrentImage()} 
-                      alt={`${currentDress.name} - view ${selectedImageIndex + 1}`}
-                      className="main-dress-img"
-                      style={{ 
-                        filter: getColorFilter(), 
-                        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)' 
-                      }}
-                    />
-
-                    {/* Enhanced Progress indicator */}
-                    <div className="progress-indicator">
-                      <span className="progress-number">{currentIndex + 1}</span>
-                      <span className="progress-separator">/</span>
-                      <span className="progress-total">{filteredDresses.length}</span>
-                    </div>
-
-
-                  </div>
-                </div>
-
-                {/* Enhanced Carousel Thumbnail Gallery */}
-                <div className="carousel-wrapper">
-                  <div className="carousel-header">
-                    <span className="carousel-title">📸 All Poses & Angles</span>
-                    <button 
-                      className="carousel-toggle"
-                      onClick={() => setShowAllThumbnails(!showAllThumbnails)}
-                    >
-                      {showAllThumbnails ? '▼ Show Less' : `▶ Show All (${getAllImages(currentDress).length})`}
-                    </button>
+              <div className="main-display-area">
+                <div className="canvas-container" style={{ background: activeBackground.gradient }}>
+                  <div className={`background-pattern pattern-${currentBackground.pattern}`}></div>
+                  
+                  {/* Left Arrow */}
+                  <div className="arrow-btn left-arrow" onClick={goToPreviousWrapped}>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
                   </div>
                   
-                  <div className={`thumbnail-carousel ${showAllThumbnails ? 'expanded' : ''}`}>
-                    {(() => {
-                      const allImages = getAllImages(currentDress)
-                      const visibleCount = showAllThumbnails ? allImages.length : Math.min(6, allImages.length)
+                  {/* Main Canvas */}
+                  <div className="canvas">
+                    <div className={`dress-display ${imageLoading ? 'loading' : ''}`}>
+                      <img 
+                        src={getCurrentImage()} 
+                        alt={`${currentDress.name} - view ${selectedImageIndex + 1}`}
+                        className="main-dress-img"
+                        style={{ 
+                          filter: getColorFilter(), 
+                          transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)' 
+                        }}
+                      />
 
-                      return allImages.slice(0, visibleCount).map((imageData, index) => (
+                      {/* Enhanced Progress indicator */}
+                      <div className="progress-indicator">
+                        <span className="progress-number">{currentIndex + 1}</span>
+                        <span className="progress-separator">/</span>
+                        <span className="progress-total">{filteredDresses.length}</span>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+                  {/* Enhanced Carousel Thumbnail Gallery */}
+                  <div className="carousel-wrapper">
+                    <div className="carousel-header">
+                      <span className="carousel-title">📸 All Poses & Angles</span>
+                      <button 
+                        className="carousel-toggle"
+                        onClick={() => setShowAllThumbnails(!showAllThumbnails)}
+                      >
+                        {showAllThumbnails ? '▼ Show Less' : `▶ Show All (${getAllImages(currentDress).length})`}
+                      </button>
+                    </div>
+                    
+                    <div className={`thumbnail-carousel ${showAllThumbnails ? 'expanded' : ''}`}>
+                      {(() => {
+                        const allImages = getAllImages(currentDress)
+                        const visibleCount = showAllThumbnails ? allImages.length : Math.min(6, allImages.length)
+
+                        return allImages.slice(0, visibleCount).map((imageData, index) => (
                         <div
                           key={index}
                           className={`carousel-item ${selectedImageIndex === index ? 'active' : ''}`}
@@ -862,6 +901,13 @@ export default function Lookbook() {
                       ))
                     })()}
                   </div>
+                </div>
+                
+                {/* Right Arrow */}
+                <div className="arrow-btn right-arrow" onClick={goToNextWrapped}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
                 </div>
               </div>
 
@@ -954,14 +1000,16 @@ export default function Lookbook() {
                       Available Colors
                     </div>
                     <div className="color-options">
-                      {currentDress.availableColors.map(color => (
+                      {currentDress.availableColors.map((color, index) => (
                         <button 
-                          key={color}
-                          className={`color-btn ${(selectedColor || currentDress.color) === color ? 'active' : ''}`}
+                          key={index}
+                          className={`color-swatch ${(selectedColor || currentDress.color) === color ? 'active' : ''}`}
+                          style={{ 
+                            background: color === 'Multicolor' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)' : color 
+                          }}
                           onClick={() => handleColorChange(color)}
+                          title={color}
                         >
-                          <div className="color-swatch" style={{ backgroundColor: color.toLowerCase() }}></div>
-                          <span>{color}</span>
                           {(selectedColor || currentDress.color) === color && <span className="color-check">✓</span>}
                         </button>
                       ))}
@@ -987,13 +1035,7 @@ export default function Lookbook() {
                 </div>
               </div>
             </div>
-
-            {/* Right Arrow */}
-            <div className="arrow-btn right-arrow" onClick={goToNextWrapped}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </div>
+          </div>
           </>
         )}
       </main>
@@ -1174,32 +1216,31 @@ export default function Lookbook() {
           box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
           z-index: 100;
           transition: all 0.3s ease;
+          display: flex;
+          flex-direction: column;
+          gap: 0;
         }
         
         .topbar:hover {
           box-shadow: 0 6px 25px rgba(0,0,0,0.15);
         }
         
-        .nav {
-          max-width: 1600px; 
-          margin: 0 auto; 
-          display: flex; 
-          align-items: center; 
-          justify-content: space-between;
-          padding: 16px 24px; 
-          gap: 20px;
+        /* Logo Section */
+        .logo-section {
+          padding: 16px 24px 12px;
+          border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+          display: flex;
+          justify-content: center;
         }
         
-        .nav-left {
-          display: flex; 
-          align-items: center; 
-          gap: 20px;
+        .logo-link {
+          text-decoration: none;
         }
         
         .logo-wrapper {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 12px;
           cursor: pointer;
           transition: transform 0.3s ease;
         }
@@ -1209,12 +1250,12 @@ export default function Lookbook() {
         }
         
         .logo-icon {
-          font-size: 32px;
+          font-size: 36px;
           animation: float 3s ease-in-out infinite;
         }
         
         .logo-text {
-          font-size: 26px;
+          font-size: 28px;
           font-weight: 900;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           -webkit-background-clip: text;
@@ -1223,53 +1264,42 @@ export default function Lookbook() {
           letter-spacing: -0.5px;
         }
         
-        .search-wrapper {
+        /* Horizontal Filter Navigation */
+        .filter-nav {
           position: relative;
           display: flex;
           align-items: center;
+          padding: 0 8px;
+          background: white;
         }
         
-        .search-icon {
-          position: absolute;
-          left: 12px;
-          font-size: 16px;
-          pointer-events: none;
-          z-index: 1;
+        .filter-items-wrapper {
+          overflow-x: auto;
+          overflow-y: hidden;
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none;  /* IE and Edge */
+          flex: 1;
         }
         
-        .search {
-          padding: 12px 16px 12px 40px;
-          border-radius: 12px;
-          border: 2px solid transparent;
-          background: #f8f9fa; 
-          width: 280px; 
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          font-size: 14px;
-          font-weight: 500;
+        .filter-items-wrapper::-webkit-scrollbar {
+          display: none; /* Chrome, Safari, Opera */
         }
         
-        .search:focus {
-          outline: none; 
-          border-color: #667eea; 
-          background: #fff; 
-          box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-          transform: scale(1.02);
-          width: 320px;
-        }
-        
-        .nav-items {
+        .filter-items {
           list-style: none; 
           display: flex; 
-          gap: 12px; 
+          gap: 10px; 
           margin: 0; 
-          padding: 0; 
-          flex-wrap: wrap;
+          padding: 12px 16px;
+          white-space: nowrap;
         }
         
-        .nav-items li {
-          padding: 10px 18px;
+        .filter-items li {
+          padding: 10px 20px;
           border-radius: 12px;
-          background: #fff; 
+          background: #f8f9fa; 
           cursor: pointer; 
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
           text-transform: capitalize; 
@@ -1280,24 +1310,82 @@ export default function Lookbook() {
           display: flex;
           align-items: center;
           gap: 6px;
+          flex-shrink: 0;
         }
         
-        .nav-emoji {
+        .filter-emoji {
           font-size: 16px;
         }
         
-        .nav-items li:hover {
+        .filter-items li:hover {
           background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
           border-color: #667eea; 
           transform: translateY(-2px);
           box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
         
-        .nav-items li.active {
+        .filter-items li.active {
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
           color: #fff; 
           box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
           transform: translateY(-2px);
+        }
+        
+        .filter-divider {
+          width: 2px;
+          height: 24px;
+          background: rgba(102, 126, 234, 0.2);
+          border-radius: 2px;
+          cursor: default !important;
+          padding: 0 !important;
+          margin: 0 4px;
+        }
+        
+        .filter-divider:hover {
+          transform: none !important;
+          background: rgba(102, 126, 234, 0.2) !important;
+          box-shadow: none !important;
+        }
+        
+        /* Scroll Buttons */
+        .filter-scroll-btn {
+          position: relative;
+          background: white;
+          border: 2px solid #667eea;
+          border-radius: 50%;
+          width: 38px;
+          height: 38px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          z-index: 2;
+          flex-shrink: 0;
+          margin: 0 4px;
+        }
+        
+        .filter-scroll-btn:hover {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          transform: scale(1.1);
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .filter-scroll-btn:hover svg {
+          stroke: white;
+        }
+        
+        .filter-scroll-btn svg {
+          stroke: #667eea;
+          transition: stroke 0.3s ease;
+        }
+        
+        .filter-scroll-btn.left {
+          margin-left: 8px;
+        }
+        
+        .filter-scroll-btn.right {
+          margin-right: 8px;
         }
 
         .hero {
@@ -1313,43 +1401,22 @@ export default function Lookbook() {
           width: 100%;
         }
         
-        .arrow-btn {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 64px; 
-          height: 64px; 
-          background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-          border-radius: 50%; 
-          display: flex; 
-          align-items: center; 
-          justify-content: center; 
-          cursor: pointer; 
-          box-shadow: 0 6px 20px rgba(0,0,0,0.15); 
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          color: #667eea;
-          z-index: 10;
-          border: 3px solid transparent;
-        }
-
-        .left-arrow {
-          left: 20px;
-        }
-
-        .right-arrow {
-          right: 20px;
-        }
-        
-        .arrow-btn:hover {
-          transform: translateY(-50%) scale(1.2);
-          box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+        .canvas-container > .arrow-btn:hover {
+          transform: translateY(-50%) scale(1.15);
+          box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4), 0 0 0 3px rgba(102, 126, 234, 0.3);
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           color: white;
-          border-color: rgba(255,255,255,0.3);
+          border-color: rgba(255,255,255,0.5);
         }
         
-        .arrow-btn:active {
-          transform: translateY(-50%) scale(1.1);
+        .canvas-container > .arrow-btn:active {
+          transform: translateY(-50%) scale(1.05);
+        }
+
+        .canvas-container > .arrow-btn svg {
+          width: 32px;
+          height: 32px;
+          stroke-width: 3;
         }
 
         .content-wrapper {
@@ -1359,6 +1426,15 @@ export default function Lookbook() {
           flex: 1;
           max-width: 1400px;
           width: 100%;
+          position: relative;
+        }
+        
+        .main-display-area {
+          display: flex;
+          gap: 24px;
+          width: 100%;
+          align-items: stretch;
+          min-height: 100%;
         }
 
         .background-selector {
@@ -1732,7 +1808,36 @@ export default function Lookbook() {
           border-radius: 24px;
           padding: 30px;
           transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-          overflow: hidden;
+          overflow: visible;
+        }
+        
+        /* Position arrows relative to canvas-container */
+        .canvas-container > .arrow-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 70px; 
+          height: 70px; 
+          background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,249,250,0.98) 100%);
+          backdrop-filter: blur(10px);
+          border-radius: 50%; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          cursor: pointer; 
+          box-shadow: 0 8px 25px rgba(0,0,0,0.25), 0 0 0 2px rgba(102, 126, 234, 0.15); 
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          color: #667eea;
+          z-index: 100;
+          border: 3px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .canvas-container > .left-arrow {
+          left: 20px;
+        }
+
+        .canvas-container > .right-arrow {
+          right: 20px;
         }
 
         .background-pattern {
@@ -2011,23 +2116,9 @@ export default function Lookbook() {
           display: flex;
           flex-direction: column;
           gap: 20px;
-          max-height: 85vh;
-          overflow-y: auto;
-          position: sticky;
-          top: 20px;
-        }
-
-        .right-sidebar::-webkit-scrollbar {
-          width: 8px;
-        }
-        
-        .right-sidebar::-webkit-scrollbar-thumb {
-          background: rgba(102, 126, 234, 0.4);
-          border-radius: 4px;
-        }
-        
-        .right-sidebar::-webkit-scrollbar-thumb:hover {
-          background: rgba(102, 126, 234, 0.6);
+          height: fit-content;
+          min-height: 100%;
+          overflow-y: visible;
         }
 
         .sidebar-header {
@@ -2420,6 +2511,10 @@ export default function Lookbook() {
         }
 
         @media (max-width: 1200px) {
+          .main-display-area {
+            flex-direction: column;
+          }
+          
           .content-wrapper {
             flex-direction: column;
           }
@@ -2432,9 +2527,17 @@ export default function Lookbook() {
             padding: 24px;
           }
           
-          .arrow-btn {
-            width: 56px;
-            height: 56px;
+          .canvas-container > .arrow-btn {
+            width: 60px;
+            height: 60px;
+          }
+          
+          .canvas-container > .left-arrow {
+            left: 15px;
+          }
+          
+          .canvas-container > .right-arrow {
+            right: 15px;
           }
 
           .canvas {
@@ -2448,34 +2551,40 @@ export default function Lookbook() {
         }
 
         @media (max-width: 900px) {
-          .nav {
-            flex-direction: column;
-            gap: 12px;
-            padding: 12px 16px;
+          .logo-section {
+            padding: 12px 16px 10px;
           }
           
-          .nav-left {
-            width: 100%;
-            flex-direction: column;
-            gap: 12px;
-          }
-
-          .logo-wrapper {
-            justify-content: center;
+          .logo-icon {
+            font-size: 32px;
           }
           
-          .search-wrapper {
-            width: 100%;
-          }
-
-          .search {
-            width: 100%;
-            padding: 10px 12px 10px 36px;
+          .logo-text {
+            font-size: 24px;
           }
           
-          .search:focus {
-            width: 100%;
-            transform: none;
+          .filter-nav {
+            padding: 0 4px;
+          }
+          
+          .filter-items {
+            padding: 10px 8px;
+            gap: 8px;
+          }
+          
+          .filter-items li {
+            padding: 8px 16px;
+            font-size: 13px;
+          }
+          
+          .filter-scroll-btn {
+            width: 34px;
+            height: 34px;
+          }
+          
+          .filter-scroll-btn svg {
+            width: 18px;
+            height: 18px;
           }
           
           .hero {
@@ -2484,21 +2593,22 @@ export default function Lookbook() {
             gap: 16px;
           }
           
-          .arrow-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 30;
-            width: 52px;
-            height: 52px;
+          .canvas-container > .arrow-btn {
+            width: 54px;
+            height: 54px;
           }
           
-          .left-arrow {
-            left: 8px;
+          .canvas-container > .arrow-btn svg {
+            width: 26px;
+            height: 26px;
           }
           
-          .right-arrow {
-            right: 8px;
+          .canvas-container > .left-arrow {
+            left: 12px;
+          }
+          
+          .canvas-container > .right-arrow {
+            right: 12px;
           }
           
           .canvas {
@@ -2546,17 +2656,41 @@ export default function Lookbook() {
             font-size: 20px;
           }
           
+          .logo-section {
+            padding: 10px 12px 8px;
+          }
+          
           .logo-text {
-            font-size: 20px;
+            font-size: 22px;
           }
 
           .logo-icon {
             font-size: 28px;
           }
 
-          .nav-items li {
+          .filter-items {
+            padding: 8px 6px;
+            gap: 6px;
+          }
+          
+          .filter-items li {
             padding: 8px 14px;
-            font-size: 13px;
+            font-size: 12px;
+          }
+          
+          .filter-emoji {
+            font-size: 14px;
+          }
+          
+          .filter-scroll-btn {
+            width: 32px;
+            height: 32px;
+            margin: 0 2px;
+          }
+          
+          .filter-scroll-btn svg {
+            width: 16px;
+            height: 16px;
           }
           
           .canvas {
@@ -2564,22 +2698,22 @@ export default function Lookbook() {
             border-radius: 12px;
           }
           
-          .arrow-btn {
-            width: 44px;
-            height: 44px;
+          .canvas-container > .arrow-btn {
+            width: 48px;
+            height: 48px;
           }
 
-          .arrow-btn svg {
+          .canvas-container > .arrow-btn svg {
             width: 22px;
             height: 22px;
           }
-
-          .left-arrow {
-            left: 6px;
+          
+          .canvas-container > .left-arrow {
+            left: 10px;
           }
-
-          .right-arrow {
-            right: 6px;
+          
+          .canvas-container > .right-arrow {
+            right: 10px;
           }
 
           .left-arrow:hover,
@@ -2725,14 +2859,22 @@ export default function Lookbook() {
             height: 320px;
           }
 
-          .arrow-btn {
-            width: 40px;
-            height: 40px;
+          .canvas-container > .arrow-btn {
+            width: 42px;
+            height: 42px;
           }
 
-          .arrow-btn svg {
-            width: 20px;
-            height: 20px;
+          .canvas-container > .arrow-btn svg {
+            width: 18px;
+            height: 18px;
+          }
+          
+          .canvas-container > .left-arrow {
+            left: 8px;
+          }
+          
+          .canvas-container > .right-arrow {
+            right: 8px;
           }
 
           .bg-option {
