@@ -216,55 +216,67 @@ export default function Home() {
       >
         <div className="workflow-steps">
           <div className="workflow-step">
-            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="50" cy="35" r="25" fill="none" stroke="currentColor" strokeWidth="4"/>
-              <rect x="20" y="55" width="60" height="40" rx="5" fill="none" stroke="currentColor" strokeWidth="4"/>
-              <circle cx="50" cy="35" r="8" fill="currentColor"/>
-              <rect x="70" y="62" width="8" height="8" rx="2" fill="currentColor"/>
-            </svg>
+            <div className="step-circle">
+              <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="35" r="25" fill="none" stroke="currentColor" strokeWidth="4"/>
+                <rect x="20" y="55" width="60" height="40" rx="5" fill="none" stroke="currentColor" strokeWidth="4"/>
+                <circle cx="50" cy="35" r="8" fill="currentColor"/>
+                <rect x="70" y="62" width="8" height="8" rx="2" fill="currentColor"/>
+              </svg>
+            </div>
             <div className="step-label">SHOOT</div>
+            <div className="connection-line"></div>
           </div>
-          <div className="workflow-arrow">→</div>
           <div className="workflow-step">
-            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d="M50 15 L50 60 M35 45 L50 60 L65 45" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-              <rect x="20" y="70" width="60" height="20" rx="3" fill="none" stroke="currentColor" strokeWidth="4"/>
-            </svg>
+            <div className="step-circle">
+              <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 15 L50 60 M35 45 L50 60 L65 45" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                <rect x="20" y="70" width="60" height="20" rx="3" fill="none" stroke="currentColor" strokeWidth="4"/>
+              </svg>
+            </div>
             <div className="step-label">UPLOAD PHOTOS</div>
+            <div className="connection-line"></div>
           </div>
-          <div className="workflow-arrow">→</div>
           <div className="workflow-step">
-            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d="M30 40 Q30 20 50 20 Q70 20 70 40 L70 70 Q70 85 55 85 L45 85 Q30 85 30 70 Z" fill="none" stroke="currentColor" strokeWidth="4"/>
-              <path d="M30 40 L70 40" stroke="currentColor" strokeWidth="4"/>
-              <circle cx="40" cy="55" r="3" fill="currentColor"/>
-              <circle cx="60" cy="55" r="3" fill="currentColor"/>
-            </svg>
+            <div className="step-circle">
+              <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M30 40 Q30 20 50 20 Q70 20 70 40 L70 70 Q70 85 55 85 L45 85 Q30 85 30 70 Z" fill="none" stroke="currentColor" strokeWidth="4"/>
+                <path d="M30 40 L70 40" stroke="currentColor" strokeWidth="4"/>
+                <circle cx="40" cy="55" r="3" fill="currentColor"/>
+                <circle cx="60" cy="55" r="3" fill="currentColor"/>
+              </svg>
+            </div>
             <div className="step-label">CHOOSE POSE</div>
+            <div className="connection-line"></div>
           </div>
-          <div className="workflow-arrow">→</div>
           <div className="workflow-step">
-            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <rect x="15" y="15" width="70" height="70" rx="5" fill="none" stroke="currentColor" strokeWidth="4"/>
-              <circle cx="35" cy="35" r="8" fill="currentColor"/>
-              <path d="M20 70 L40 50 L55 65 L75 40 L85 50" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <div className="step-circle">
+              <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="15" y="15" width="70" height="70" rx="5" fill="none" stroke="currentColor" strokeWidth="4"/>
+                <circle cx="35" cy="35" r="8" fill="currentColor"/>
+                <path d="M20 70 L40 50 L55 65 L75 40 L85 50" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
             <div className="step-label">CHOOSE BACKGROUND</div>
+            <div className="connection-line"></div>
           </div>
-          <div className="workflow-arrow">→</div>
           <div className="workflow-step">
-            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="50" cy="50" r="8" fill="currentColor"/>
-              <path d="M50 20 L50 30 M80 50 L70 50 M50 80 L50 70 M20 50 L30 50" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
-              <path d="M70 30 L63 37 M70 70 L63 63 M30 70 L37 63 M30 30 L37 37" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
-            </svg>
+            <div className="step-circle">
+              <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="8" fill="currentColor"/>
+                <path d="M50 20 L50 30 M80 50 L70 50 M50 80 L50 70 M20 50 L30 50" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                <path d="M70 30 L63 37 M70 70 L63 63 M30 70 L37 63 M30 30 L37 37" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+              </svg>
+            </div>
             <div className="step-label">GENERATE</div>
+            <div className="connection-line"></div>
           </div>
-          <div className="workflow-arrow">→</div>
           <div className="workflow-step">
-            <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 70 L50 20 L50 45 L75 45 L45 95 L45 70 Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-            </svg>
+            <div className="step-circle">
+              <svg className="step-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 70 L50 20 L50 45 L75 45 L45 95 L45 70 Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
+              </svg>
+            </div>
             <div className="step-label">SOCIAL CAMPAIGN<br/>or E-COMMERCE</div>
           </div>
         </div>
@@ -480,7 +492,16 @@ export default function Home() {
               whileHover={{ scale: 1.03, y: -8 }}
               className="use-case-card"
             >
-              <div className="use-case-icon">📦</div>
+              <svg className="use-case-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="30" width="60" height="50" rx="4" fill="none" stroke="currentColor" strokeWidth="3"/>
+                <rect x="20" y="30" width="60" height="15" fill="currentColor" opacity="0.3"/>
+                <path d="M30 20 L50 10 L70 20 L70 30 L30 30 Z" fill="currentColor" opacity="0.5"/>
+                <circle cx="35" cy="55" r="3" fill="currentColor"/>
+                <circle cx="50" cy="55" r="3" fill="currentColor"/>
+                <circle cx="65" cy="55" r="3" fill="currentColor"/>
+                <rect x="30" y="65" width="15" height="8" rx="1" fill="currentColor" opacity="0.6"/>
+                <rect x="50" y="65" width="20" height="8" rx="1" fill="currentColor" opacity="0.6"/>
+              </svg>
               <h3 className="use-case-title">Packshot Collections</h3>
               <p className="use-case-desc">Use already crafted clothes or collections to create stunning visuals</p>
             </motion.div>
@@ -489,7 +510,15 @@ export default function Home() {
               whileHover={{ scale: 1.03, y: -8 }}
               className="use-case-card"
             >
-              <div className="use-case-icon">📱</div>
+              <svg className="use-case-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="25" y="15" width="50" height="70" rx="8" fill="none" stroke="currentColor" strokeWidth="3"/>
+                <rect x="25" y="15" width="50" height="10" rx="8" fill="currentColor" opacity="0.3"/>
+                <circle cx="50" cy="78" r="4" fill="currentColor"/>
+                <rect x="35" y="30" width="30" height="20" rx="3" fill="currentColor" opacity="0.4"/>
+                <line x1="35" y1="55" x2="65" y2="55" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <line x1="35" y1="62" x2="60" y2="62" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M60 38 L65 43 L75 30" fill="none" stroke="#4ade80" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               <h3 className="use-case-title">Social Media Ready</h3>
               <p className="use-case-desc">Push content to socials & online shops with one click</p>
             </motion.div>
@@ -498,7 +527,15 @@ export default function Home() {
               whileHover={{ scale: 1.03, y: -8 }}
               className="use-case-card"
             >
-              <div className="use-case-icon">🔗</div>
+              <svg className="use-case-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="30" cy="50" r="18" fill="none" stroke="currentColor" strokeWidth="3"/>
+                <circle cx="70" cy="50" r="18" fill="none" stroke="currentColor" strokeWidth="3"/>
+                <line x1="45" y1="50" x2="55" y2="50" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                <path d="M30 50 L25 45 M30 50 L25 55" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                <path d="M70 50 L75 45 M70 50 L75 55" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                <circle cx="30" cy="50" r="6" fill="currentColor"/>
+                <circle cx="70" cy="50" r="6" fill="currentColor"/>
+              </svg>
               <h3 className="use-case-title">B2B Integration</h3>
               <p className="use-case-desc">Seamlessly integrate with your existing e-commerce platform</p>
             </motion.div>
