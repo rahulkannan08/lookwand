@@ -512,7 +512,20 @@ html{
   transition:all 0.4s ease;
 }
 
+.showcase-icon-svg{
+  width:56px;
+  height:56px;
+  color:#60efff;
+  filter:drop-shadow(0 4px 20px rgba(96, 239, 255, 0.3));
+  transition:all 0.4s ease;
+}
+
 .showcase-item:hover .showcase-icon{
+  transform:scale(1.2) rotate(10deg);
+  filter:drop-shadow(0 8px 30px rgba(96, 239, 255, 0.5));
+}
+
+.showcase-item:hover .showcase-icon-svg{
   transform:scale(1.2) rotate(10deg);
   filter:drop-shadow(0 8px 30px rgba(96, 239, 255, 0.5));
 }
@@ -615,6 +628,15 @@ html{
 
 .message-icon{
   font-size:64px;
+  filter:drop-shadow(0 4px 20px rgba(96, 239, 255, 0.5));
+  position:relative;
+  z-index:1;
+}
+
+.message-icon-svg{
+  width:70px;
+  height:70px;
+  color:#60efff;
   filter:drop-shadow(0 4px 20px rgba(96, 239, 255, 0.5));
   position:relative;
   z-index:1;
@@ -1102,12 +1124,14 @@ button, select, input{font-family:inherit}
   }
   .showcase-item{padding:24px 20px; gap:12px}
   .showcase-icon{font-size:44px}
+  .showcase-icon-svg{width:44px;height:44px}
   .showcase-label{font-size:18px}
   .showcase-desc{font-size:13px}
   .arrow-down{font-size:36px}
   .solution-text{font-size:14px}
   .message-box{padding:30px 25px; gap:16px; border-radius:20px}
   .message-icon{font-size:48px}
+  .message-icon-svg{width:55px;height:55px}
   .message-title{font-size:18px}
   .message-quote{font-size:24px}
   .message-quote::before,
@@ -1147,6 +1171,7 @@ button, select, input{font-family:inherit}
   .mission-subtext{font-size:16px}
   .showcase-grid{grid-template-columns:repeat(auto-fit, minmax(240px, 1fr))}
   .showcase-icon{font-size:48px}
+  .showcase-icon-svg{width:48px;height:48px}
   .message-box{padding:35px 40px}
   .message-quote{font-size:28px}
 
@@ -1173,6 +1198,7 @@ button, select, input{font-family:inherit}
   .mission-text{font-size:15px}
   .showcase-item{padding:20px 16px}
   .showcase-icon{font-size:40px}
+  .showcase-icon-svg{width:40px;height:40px}
   .features-showcase-container{padding:28px 16px; gap:28px}
   .features-showcase-title{font-size:22px}
   .gallery-grid{grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:10px}

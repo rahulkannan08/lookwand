@@ -304,10 +304,10 @@ export default function Home() {
             className="mission-statement"
           >
             <p className="mission-text">
-              OUR MISSION IS TO SOLVE THE PROBLEM OF MASS PRODUCTION IN FASHION INDUSTRY.
+              REDUCING CLOTHING WASTE, NOT JOBS
             </p>
             <p className="mission-subtext">
-              A COMBINATION OF VERSATILE TOOL AND THE TOUCH OF HUMAN CREATIVITY
+              Market research before mass production. Test designs with real models, get feedback, produce only what sells.
             </p>
           </motion.div>
 
@@ -322,27 +322,41 @@ export default function Home() {
                 whileHover={{ scale: 1.05, y: -10 }}
                 className="showcase-item problem-item"
               >
-                <div className="showcase-icon">📸</div>
-                <h3 className="showcase-label">Mass Production</h3>
-                <p className="showcase-desc">Traditional photoshoots are expensive, time-consuming, and wasteful</p>
+                <svg className="showcase-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="20" y="30" width="15" height="30" rx="2" fill="currentColor"/>
+                  <rect x="42" y="30" width="15" height="30" rx="2" fill="currentColor"/>
+                  <rect x="64" y="30" width="15" height="30" rx="2" fill="currentColor"/>
+                  <path d="M15 65 L85 65 L80 85 L20 85 Z" fill="currentColor" opacity="0.6"/>
+                  <line x1="30" y1="75" x2="70" y2="75" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                </svg>
+                <h3 className="showcase-label">Overproduction Waste</h3>
+                <p className="showcase-desc">Brands produce hundreds of pieces without knowing if they'll sell - leading to waste</p>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05, y: -10 }}
                 className="showcase-item problem-item"
               >
-                <div className="showcase-icon">⏰</div>
-                <h3 className="showcase-label">Slow Turnaround</h3>
-                <p className="showcase-desc">Weeks of planning, shooting, and editing for each campaign</p>
+                <svg className="showcase-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" strokeWidth="4"/>
+                  <path d="M50 25 L50 50 L65 65" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                  <text x="50" y="95" fontSize="16" fill="currentColor" textAnchor="middle">?</text>
+                </svg>
+                <h3 className="showcase-label">No Market Validation</h3>
+                <p className="showcase-desc">Small brands risk everything producing designs that haven't been tested</p>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05, y: -10 }}
                 className="showcase-item problem-item"
               >
-                <div className="showcase-icon">💰</div>
-                <h3 className="showcase-label">High Costs</h3>
-                <p className="showcase-desc">Models, photographers, studios, and post-production expenses</p>
+                <svg className="showcase-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M30 40 Q30 20 50 20 Q70 20 70 40 L70 70 Q70 85 55 85 L45 85 Q30 85 30 70 Z" fill="none" stroke="currentColor" strokeWidth="4"/>
+                  <line x1="30" y1="40" x2="70" y2="40" stroke="currentColor" strokeWidth="4"/>
+                  <line x1="20" y1="70" x2="80" y2="30" stroke="#ff4444" strokeWidth="5" strokeLinecap="round"/>
+                </svg>
+                <h3 className="showcase-label">Financial Risk</h3>
+                <p className="showcase-desc">Crafting 200+ pieces upfront can make or break a small fashion brand</p>
               </motion.div>
             </div>
 
@@ -353,7 +367,7 @@ export default function Home() {
               className="solution-arrow"
             >
               <div className="arrow-down">↓</div>
-              <p className="solution-text">Our Solution</p>
+              <p className="solution-text">Our Solution: Test Before You Produce</p>
             </motion.div>
 
             <div className="showcase-grid">
@@ -361,27 +375,45 @@ export default function Home() {
                 whileHover={{ scale: 1.05, y: -10 }}
                 className="showcase-item solution-item"
               >
-                <div className="showcase-icon">✨</div>
-                <h3 className="showcase-label">AI-Powered</h3>
-                <p className="showcase-desc">Generate unlimited content with real human models</p>
+                <svg className="showcase-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="25" y="25" width="50" height="60" rx="3" fill="none" stroke="currentColor" strokeWidth="4"/>
+                  <circle cx="50" cy="45" r="8" fill="currentColor"/>
+                  <rect x="38" y="60" width="24" height="4" rx="2" fill="currentColor"/>
+                  <rect x="33" y="68" width="34" height="4" rx="2" fill="currentColor"/>
+                  <path d="M50 30 L50 20 M50 20 L45 25 M50 20 L55 25" stroke="#4ade80" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <h3 className="showcase-label">Craft One Sample</h3>
+                <p className="showcase-desc">Create just 1 physical piece per design - test it with AI-generated lookbooks</p>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05, y: -10 }}
                 className="showcase-item solution-item"
               >
-                <div className="showcase-icon">⚡</div>
-                <h3 className="showcase-label">Instant Results</h3>
-                <p className="showcase-desc">Create professional lookbooks in minutes, not weeks</p>
+                <svg className="showcase-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="20" y="30" width="60" height="45" rx="3" fill="none" stroke="currentColor" strokeWidth="4"/>
+                  <path d="M30 50 L40 60 L55 40" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="68" cy="52" r="6" fill="currentColor"/>
+                  <path d="M45 20 L50 10 L55 20" fill="currentColor"/>
+                  <path d="M30 85 Q35 90 50 88 Q65 90 70 85" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                </svg>
+                <h3 className="showcase-label">Get Real Feedback</h3>
+                <p className="showcase-desc">Share AI lookbooks, collect data, understand what your market actually wants</p>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05, y: -10 }}
                 className="showcase-item solution-item"
               >
-                <div className="showcase-icon">🎨</div>
-                <h3 className="showcase-label">Human Creativity</h3>
-                <p className="showcase-desc">Full creative control with AI as your assistant</p>
+                <svg className="showcase-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <text x="30" y="55" fontSize="40" fontWeight="bold" fill="currentColor">50</text>
+                  <path d="M20 65 L35 80 L50 75 L65 82 L80 70" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                  <circle cx="35" cy="80" r="3" fill="#4ade80"/>
+                  <circle cx="50" cy="75" r="3" fill="#4ade80"/>
+                  <circle cx="65" cy="82" r="3" fill="#4ade80"/>
+                </svg>
+                <h3 className="showcase-label">Produce Smartly</h3>
+                <p className="showcase-desc">Based on feedback, produce exactly 50, 100, or 500 pieces - not guessing</p>
               </motion.div>
             </div>
           </motion.div>
@@ -393,14 +425,19 @@ export default function Home() {
             className="main-message"
           >
             <div className="message-box">
-              <div className="message-icon">👤</div>
-              <h3 className="message-title">Our Philosophy</h3>
+              <svg className="message-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="35" r="15" fill="currentColor"/>
+                <path d="M50 50 Q30 55 25 75 L75 75 Q70 55 50 50" fill="currentColor"/>
+                <circle cx="35" cy="30" r="3" fill="#fff"/>
+                <circle cx="65" cy="30" r="3" fill="#fff"/>
+              </svg>
+              <h3 className="message-title">Fashion Needs The Human Touch</h3>
               <p className="message-quote">
-                "Human above AI, not AI above human."
+                "We don't replace models, stylists, or photographers. We empower them."
               </p>
               <p className="message-explanation">
-                We believe in empowering creators, not replacing them. 
-                Our AI enhances your vision while keeping the human touch at the heart of every creation.
+                Real models are hired. Real clothes are made. Real creativity drives everything. 
+                AI is just a tool for market research - helping brands make smarter decisions and reduce waste, not jobs.
               </p>
             </div>
           </motion.div>
