@@ -161,9 +161,9 @@ export default function Home() {
   return (
     <div className="landing">
       <canvas ref={canvasRef} className="aurora-canvas" />
-      <div className="logo-container">
-        <div className="logo-icon"></div>
-        <h1 className="title">LOOKBOOKgen</h1>
+      <div className="logo-container" style={{ animation: 'none' }}>
+        <img src="/images/logo.png" alt="LOOKBOOKgen Logo" className="logo-icon" style={{ width: '120px', height: '120px', filter: 'drop-shadow(0 4px 20px rgba(96, 239, 255, 0.5))' }} />
+        <h1 className="title" style={{ animation: 'none' }}>LOOKBOOKgen</h1>
         <p className="subtitle">HUMANIZING GENERATIVE AI</p>
       </div>
       
@@ -207,6 +207,143 @@ export default function Home() {
         </p>
       </motion.div>
 
+      {/* Fashion Showcase - Before/After */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.7 }}
+        className="hero-showcase-section"
+      >
+        <div className="hero-showcase-grid">
+          <motion.div
+            initial={{ opacity: 0, x: -60, rotateY: -15 }}
+            animate={{ opacity: 1, x: 0, rotateY: 0 }}
+            transition={{ duration: 1, delay: 0.9, ease: [0.4, 0, 0.2, 1] }}
+            whileHover={{ 
+              y: -15, 
+              scale: 1.05,
+              rotateY: 5,
+              transition: { duration: 0.4 }
+            }}
+            className="hero-showcase-card"
+          >
+            <div className="hero-image-wrapper">
+              <div className="hero-background-glow"></div>
+              <img 
+                src="/images/model-back.jpg" 
+                alt="Real model fashion photography" 
+                className="hero-showcase-image"
+              />
+              <div className="hero-corner hero-corner-tl"></div>
+              <div className="hero-corner hero-corner-tr"></div>
+              <div className="hero-corner hero-corner-bl"></div>
+              <div className="hero-corner hero-corner-br"></div>
+              <div className="hero-floating-badge hero-badge-1">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" 
+                    fill="currentColor" stroke="currentColor" strokeWidth="1.5"/>
+                </svg>
+                <span>REAL</span>
+              </div>
+            </div>
+            <div className="hero-showcase-label">
+              <div className="label-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                  <circle cx="12" cy="13" r="4" stroke="currentColor" strokeWidth="2" fill="none"/>
+                </svg>
+              </div>
+              <div className="label-content">
+                <h3 className="label-title">ORIGINAL PHOTO</h3>
+                <p className="label-subtitle">Professional Model Shoot</p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 60, rotateY: 15 }}
+            animate={{ opacity: 1, x: 0, rotateY: 0 }}
+            transition={{ duration: 1, delay: 1.1, ease: [0.4, 0, 0.2, 1] }}
+            whileHover={{ 
+              y: -15, 
+              scale: 1.05,
+              rotateY: -5,
+              transition: { duration: 0.4 }
+            }}
+            className="hero-showcase-card hero-card-featured"
+          >
+            <div className="hero-image-wrapper">
+              <div className="hero-background-glow hero-glow-ai"></div>
+              <img 
+                src="/images/model-front.jpg" 
+                alt="AI-enhanced fashion avatar" 
+                className="hero-showcase-image"
+              />
+              <div className="hero-corner hero-corner-tl"></div>
+              <div className="hero-corner hero-corner-tr"></div>
+              <div className="hero-corner hero-corner-bl"></div>
+              <div className="hero-corner hero-corner-br"></div>
+              <div className="hero-floating-badge hero-badge-2">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                  <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+                <span>AI</span>
+              </div>
+              <div className="ai-pulse-ring"></div>
+            </div>
+            <div className="hero-showcase-label">
+              <div className="label-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+                  <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                  <path d="M19 3L20 6L23 7L20 8L19 11L18 8L15 7L18 6L19 3Z" fill="currentColor" opacity="0.6"/>
+                  <path d="M6 15L7 18L10 19L7 20L6 23L5 20L2 19L5 18L6 15Z" fill="currentColor" opacity="0.6"/>
+                </svg>
+              </div>
+              <div className="label-content">
+                <h3 className="label-title">AI AVATAR RESULT</h3>
+                <p className="label-subtitle">Endless Possibilities</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Connecting Arrow */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 1.3 }}
+          className="hero-connector"
+        >
+          <svg viewBox="0 0 100 20" className="connector-arrow">
+            <defs>
+              <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(96, 239, 255, 0.3)" />
+                <stop offset="50%" stopColor="rgba(96, 239, 255, 1)" />
+                <stop offset="100%" stopColor="rgba(96, 239, 255, 0.3)" />
+              </linearGradient>
+            </defs>
+            <path 
+              d="M 0 10 L 85 10" 
+              stroke="url(#arrowGradient)" 
+              strokeWidth="3" 
+              strokeDasharray="5,5"
+              className="arrow-line"
+            />
+            <path 
+              d="M 85 5 L 95 10 L 85 15" 
+              fill="none" 
+              stroke="#3be3ff" 
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          
+        </motion.div>
+      </motion.div>
+
       {/* Workflow Steps */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -246,7 +383,7 @@ export default function Home() {
                 <circle cx="60" cy="55" r="3" fill="currentColor"/>
               </svg>
             </div>
-            <div className="step-label">CHOOSE POSE</div>
+            <div className="step-label">PICK A POSE</div>
             <div className="connection-line"></div>
           </div>
           <div className="workflow-step">
@@ -268,7 +405,7 @@ export default function Home() {
                 <path d="M70 30 L63 37 M70 70 L63 63 M30 70 L37 63 M30 30 L37 37" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
               </svg>
             </div>
-            <div className="step-label">GENERATE</div>
+            <div className="step-label">GENERATE CONTENT</div>
             <div className="connection-line"></div>
           </div>
           <div className="workflow-step">
@@ -277,7 +414,7 @@ export default function Home() {
                 <path d="M20 70 L50 20 L50 45 L75 45 L45 95 L45 70 Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
               </svg>
             </div>
-            <div className="step-label">SOCIAL CAMPAIGN<br/>or E-COMMERCE</div>
+            <div className="step-label">UPLOAD TO SOCIALS AND RETAIL PLATFORM</div>
           </div>
         </div>
       </motion.div>
@@ -290,6 +427,70 @@ export default function Home() {
         <Link href="/lookbook" className="enter-btn" aria-label="Create AI Lookbook">
           CREATE AI LOOKBOOK
         </Link>
+      </motion.div>
+
+      {/* Fashion Carousel - Enhanced */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.9, ease: [0.4, 0, 0.2, 1] }}
+        className="fashion-carousel-section"
+      >
+        <motion.h3
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.1 }}
+          className="carousel-section-title"
+        >
+          Explore Fashion Styles
+        </motion.h3>
+        <div className="carousel-container">
+          <div className="carousel-track">
+            {[
+              { src: '/images/portrait-beautiful-stylish-young-woman.jpg', label: 'Street Style', desc: 'Urban & Casual' },
+              { src: '/images/full-shot-woman-wearing-full-pink-outfit.jpg', label: 'Bold Colors', desc: 'Vibrant & Confident' },
+              { src: '/images/mannn.png', label: 'Classic Elegance', desc: 'Timeless & Refined' },
+              { src: '/images/gorgeous-woman-with-blonde-wavy-hair-wearing-elegant-beige-dress (1).jpg', label: 'Evening Glam', desc: 'Luxury & Sophistication' }
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: idx * 0.15,
+                  ease: [0.4, 0, 0.2, 1]
+                }}
+                whileHover={{ 
+                  y: -12, 
+                  scale: 1.05,
+                  transition: { duration: 0.3 }
+                }}
+                className="carousel-slide"
+              >
+                <div className="carousel-image-wrapper">
+                  <img src={item.src} alt={item.label} className="carousel-image" />
+                  <div className="carousel-gradient"></div>
+                  <div className="carousel-shine"></div>
+                </div>
+                <div className="carousel-overlay">
+                  <div className="carousel-content">
+                    <span className="carousel-label">{item.label}</span>
+                    <span className="carousel-description">{item.desc}</span>
+                  </div>
+                  <div className="carousel-view-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 16 16 12 12 8"/>
+                      <line x1="8" y1="12" x2="16" y2="12"/>
+                    </svg>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </motion.div>
 
       {/* Vision Section - Why LOOKBOOKgen */}
@@ -322,6 +523,25 @@ export default function Home() {
               Market research before mass production. Test designs with real models, get feedback, produce only what sells.
             </p>
           </motion.div>
+
+          {/* Overproduction Waste Image Section */}
+          <div className="overproduction-image-wrapper">
+            <div className="overproduction-image-container">
+              <motion.img
+                src="/images/overproduction-waste.png"
+                alt="Overproduction waste in fashion industry"
+                className="overproduction-image"
+                initial={{ opacity: 0, scale: 0.96 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                viewport={{ once: true }}
+              />
+              <div className="corner-effect corner-tl"></div>
+              <div className="corner-effect corner-tr"></div>
+              <div className="corner-effect corner-bl"></div>
+              <div className="corner-effect corner-br"></div>
+            </div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -460,12 +680,96 @@ export default function Home() {
               </svg>
               <h3 className="message-title">Fashion Needs The Human Touch</h3>
               <p className="message-quote">
-                "We don't replace models, stylists, or photographers. We empower them."
+                We don't replace models, stylists, or photographers. We empower them.
               </p>
               <p className="message-explanation">
                 Real models are hired. Real clothes are made. Real creativity drives everything. 
                 AI is just a tool for market research - helping brands make smarter decisions and reduce waste, not jobs.
               </p>
+            </div>
+          </motion.div>
+
+          {/* Behind The Scenes Images */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 2.0 }}
+            className="behind-scenes-section"
+          >
+            <motion.h3
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 2.2 }}
+              className="behind-scenes-title"
+            >
+              Real People, Real Process
+            </motion.h3>
+            
+            <div className="behind-scenes-grid">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="behind-scene-card"
+                whileHover={{ y: -12, scale: 1.02 }}
+              >
+                <div className="scene-image-wrapper">
+                  <img 
+                    src="/images/image.png" 
+                    alt="Fashion designers collaborating on designs" 
+                    className="scene-image"
+                  />
+                  <div className="scene-gradient"></div>
+                  <div className="scene-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M30 40 L40 30 L50 40 L60 30 L70 40" fill="none" stroke="#3be3ff" strokeWidth="3" strokeLinecap="round"/>
+                      <rect x="25" y="45" width="50" height="35" rx="3" fill="none" stroke="#3be3ff" strokeWidth="3"/>
+                      <circle cx="40" cy="60" r="5" fill="#3be3ff" opacity="0.6"/>
+                      <circle cx="60" cy="60" r="5" fill="#3be3ff" opacity="0.6"/>
+                    </svg>
+                  </div>
+                </div>
+                <div className="scene-content">
+                  <h4 className="scene-label">Design & Collaboration</h4>
+                  <p className="scene-description">
+                    Fashion designers and stylists working together to create unique pieces and test concepts
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="behind-scene-card"
+                whileHover={{ y: -12, scale: 1.02 }}
+              >
+                <div className="scene-image-wrapper">
+                  <img 
+                    src="/images/image2.png" 
+                    alt="Professional photoshoot with real models" 
+                    className="scene-image"
+                  />
+                  <div className="scene-gradient"></div>
+                  <div className="scene-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="50" cy="45" r="20" fill="none" stroke="#3be3ff" strokeWidth="3"/>
+                      <circle cx="50" cy="45" r="12" fill="none" stroke="#3be3ff" strokeWidth="2"/>
+                      <path d="M30 45 L25 45 M70 45 L75 45" stroke="#3be3ff" strokeWidth="3" strokeLinecap="round"/>
+                      <rect x="35" y="20" width="30" height="5" rx="2" fill="#3be3ff" opacity="0.6"/>
+                      <path d="M40 70 L45 85 L55 85 L60 70 Z" fill="none" stroke="#3be3ff" strokeWidth="3"/>
+                    </svg>
+                  </div>
+                </div>
+                <div className="scene-content">
+                  <h4 className="scene-label">Professional Photoshoots</h4>
+                  <p className="scene-description">
+                    Real models in professional studio settings - the foundation for AI-enhanced content
+                  </p>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -566,26 +870,52 @@ export default function Home() {
             <h3 className="gallery-title">See It In Action</h3>
             <div className="gallery-grid">
               {[
-                'https://drive.google.com/uc?id=1edKcLvVbJWuX93LeO3iPVf8kUVvZ3nQz',
-                'https://drive.google.com/uc?id=1zlOHWEgcQoNJ03apVwRW4hs1lGraRg9g',
-                'https://drive.google.com/uc?id=1e8iV-1v5pDPNNO7M1c1IQETmeAmPEcC5',
-                'https://drive.google.com/uc?id=1iK__fG04Mns7cXau6eaagTnr8GcrmMBR',
-                'https://drive.google.com/uc?id=1AKgn3kwr8HHhRGkYtbbyFf-QY6hV5FWq',
-                'https://drive.google.com/uc?id=13UEYsL0bwY10oSRVmLWmmddBH9kIUuHx',
-                'https://drive.google.com/uc?id=1ZytQxt6u5a1fkWBCx4U6xhbfcTtQKspQ',
-                'https://drive.google.com/uc?id=1n0KxL0UJtgq963MRMpnggZxDt4JqcHhD'
-              ].map((img, idx) => (
+                { src: '/images/fashion-woman-casual-summer-clothes (1).jpg', label: 'Summer Casual' },
+                { src: '/images/mannobg.png', label: 'Studio Portrait' },
+                { src: '/images/alluring-skinny-young-blonde-woman-posing-studio-red-background-she-is-wearing-blue-down-jacket-sunglasses-yellow-stockings (2).jpg', label: 'Bold & Bright' },
+                { src: '/images/african-humoured-young-man-pointing-finger-with-cheerful-smile-indoor-photo-carefree-curly-african-guy-expressing-good-emotions.jpg', label: 'Street Style' },
+                { src: '/images/from gargi 3.jpg', label: 'Editorial Fashion' },
+                { src: '/images/imagegrl.png', label: 'Modern Look' },
+                { src: '/images/close-up-portrait-man-shirt-mockup (1).jpg', label: 'Classic Style' },
+                { src: '/images/final.png', label: 'Final Touch' }
+              ].map((item, idx) => (
                 <motion.div
                   key={idx}
-                  whileHover={{ scale: 1.08, zIndex: 10 }}
+                  whileHover={{ 
+                    scale: 1.12, 
+                    zIndex: 10,
+                    rotate: idx % 2 === 0 ? 2 : -2,
+                    transition: { duration: 0.3, ease: "easeOut" }
+                  }}
                   className="gallery-item"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 2.8 + idx * 0.1 }}
+                  initial={{ 
+                    opacity: 0, 
+                    scale: 0.7,
+                    y: 60,
+                    rotate: idx % 2 === 0 ? -10 : 10
+                  }}
+                  whileInView={{ 
+                    opacity: 1, 
+                    scale: 1,
+                    y: 0,
+                    rotate: 0
+                  }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ 
+                    duration: 0.7, 
+                    delay: idx * 0.15,
+                    ease: [0.4, 0, 0.2, 1]
+                  }}
                 >
-                  <img src={img} alt={`Example ${idx + 1}`} className="gallery-image" />
+                  <div className="gallery-image-container">
+                    <img src={item.src} alt={item.label} className="gallery-image" />
+                    <div className="gallery-shine"></div>
+                  </div>
                   <div className="gallery-overlay">
-                    <span className="overlay-text">AI Generated</span>
+                    <div className="overlay-content">
+                      <span className="overlay-badge">AI Generated</span>
+                      <span className="overlay-label">{item.label}</span>
+                    </div>
                   </div>
                 </motion.div>
               ))}

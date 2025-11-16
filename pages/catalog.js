@@ -126,7 +126,10 @@ export default function Catalog() {
       {/* Header */}
       <header className="catalog-header">
         <Link href="/" className="back-home">← Home</Link>
-        <h1>Women's Clothing</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <img src="/images/logo.png" alt="LOOKBOOKgen Logo" style={{ width: '40px', height: '40px', filter: 'drop-shadow(0 2px 8px rgba(96, 239, 255, 0.4))' }} />
+          <h1>Women's Clothing</h1>
+        </div>
         <div className="view-toggle">
           <Link href="/lookbook" className="view-link">Carousel View</Link>
         </div>

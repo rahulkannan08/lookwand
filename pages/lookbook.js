@@ -511,6 +511,30 @@ export default function Lookbook() {
   const [customColor, setCustomColor] = useState('#667eea')
   const [showColorPicker, setShowColorPicker] = useState(false)
 
+  // Scroll to top when component mounts - multiple methods for reliability
+  useEffect(() => {
+    // Method 1: Immediate scroll
+    window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    
+    // Method 2: Delayed scroll to ensure DOM is ready
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'instant'
+      })
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+    }, 0)
+    
+    // Method 3: Another delayed scroll for safety
+    setTimeout(() => {
+      window.scrollTo(0, 0)
+    }, 10)
+  }, [])
+
   // Filter dresses based on all active filters
   const filteredDresses = DRESSES.filter(dress => {
     const matchesCategory = categoryFilter === 'all' || dress.category === categoryFilter
@@ -738,12 +762,7 @@ export default function Lookbook() {
 
           {/* Logo - Center */}
           <div className="logo-wrapper">
-            <svg className="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d="M30 40 Q30 20 50 20 Q70 20 70 40 L70 70 Q70 85 55 85 L45 85 Q30 85 30 70 Z" fill="currentColor" opacity="0.9"/>
-              <path d="M30 40 L70 40" stroke="white" strokeWidth="2"/>
-              <circle cx="42" cy="55" r="2" fill="white"/>
-              <circle cx="58" cy="55" r="2" fill="white"/>
-            </svg>
+            <img src="/images/logo.png" alt="LOOKBOOKgen Logo" className="logo-icon" />
             <div className="logo-text-container">
               <span className="logo-text">LOOKBOOKgen</span>
               <span className="logo-subtitle">HUMANIZING GENERATIVE AI</span>
@@ -1106,14 +1125,15 @@ export default function Lookbook() {
                   </div>
                 )}
 
-                {/* Add to Cart */}
+                {/* Generate Pose */}
                 <button className="add-cart-btn-sidebar">
-                  <svg className="cart-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="9" cy="21" r="1"/>
-                    <circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  <svg className="cart-icon" width="18" height="18" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor">
+                    <path d="M30 40 Q30 20 50 20 Q70 20 70 40 L70 70 Q70 85 55 85 L45 85 Q30 85 30 70 Z" fill="none" stroke="currentColor" strokeWidth="4"/>
+                    <path d="M30 40 L70 40" stroke="currentColor" strokeWidth="4"/>
+                    <circle cx="40" cy="55" r="3" fill="currentColor"/>
+                    <circle cx="60" cy="55" r="3" fill="currentColor"/>
                   </svg>
-                  Add to Cart
+                  Generate Pose
                   <span className="cart-arrow">→</span>
                 </button>
 
