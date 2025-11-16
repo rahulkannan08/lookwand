@@ -710,9 +710,16 @@ export default function Lookbook() {
     <div className="page-root">
       {/* Animated AI Info Banner */}
       <div className="ai-banner">
-        <span className="ai-icon">✨</span>
+        <svg className="ai-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polygon points="12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9"/>
+        </svg>
         <p className="ai-text">AI-Powered Fashion Showcase • Interactive 360° Views • Virtual Try-On</p>
-        <span className="ai-icon">🎨</span>
+        <svg className="ai-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a10 10 0 0 0 0 20 4 4 0 0 1 0-8 10 10 0 0 0 0-12z"/>
+          <circle cx="8" cy="12" r="1" fill="currentColor"/>
+          <circle cx="12" cy="8" r="1" fill="currentColor"/>
+        </svg>
       </div>
       
 
@@ -720,11 +727,38 @@ export default function Lookbook() {
       <header className="topbar">
         {/* Logo Section */}
         <div className="logo-section">
-          <Link href="/" className="logo-link">
-            <div className="logo-wrapper">
-              <span className="logo-icon">👗</span>
-              <span className="logo-text">LookWand</span>
+          {/* Home Button - Left */}
+          <Link href="/" className="home-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            Home
+          </Link>
+
+          {/* Logo - Center */}
+          <div className="logo-wrapper">
+            <svg className="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M30 40 Q30 20 50 20 Q70 20 70 40 L70 70 Q70 85 55 85 L45 85 Q30 85 30 70 Z" fill="currentColor" opacity="0.9"/>
+              <path d="M30 40 L70 40" stroke="white" strokeWidth="2"/>
+              <circle cx="42" cy="55" r="2" fill="white"/>
+              <circle cx="58" cy="55" r="2" fill="white"/>
+            </svg>
+            <div className="logo-text-container">
+              <span className="logo-text">LOOKBOOKgen</span>
+              <span className="logo-subtitle">HUMANIZING GENERATIVE AI</span>
             </div>
+          </div>
+          
+          {/* Catalog Button - Right */}
+          <Link href="/catalog" className="catalog-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            Catalog
           </Link>
         </div>
 
@@ -746,7 +780,10 @@ export default function Lookbook() {
           <div className="filter-items-wrapper">
             <ul className="filter-items">
               <li className={brandFilter === 'all' && categoryFilter === 'all' ? 'active' : ''} onClick={() => { handleFilterChange('brand', 'all'); handleFilterChange('category', 'all') }}>
-                <span className="filter-emoji">✨</span> All
+                <svg className="filter-emoji" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polygon points="12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9"/>
+                </svg>
+                All
               </li>
               {brands.filter(b => b !== 'all').map(brand => (
                 <li key={brand} className={brandFilter === brand ? 'active' : ''} onClick={() => { handleFilterChange('brand', brand); handleFilterChange('category', 'all') }}>
@@ -755,19 +792,13 @@ export default function Lookbook() {
               ))}
               <li className="filter-divider"></li>
               <li className={categoryFilter === 'men' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'men'); handleFilterChange('brand', 'all') }}>
-                <span className="filter-emoji">👔</span> Men
+                Men
               </li>
               <li className={categoryFilter === 'women' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'women'); handleFilterChange('brand', 'all') }}>
-                <span className="filter-emoji">👗</span> Women
+                Women
               </li>
               <li className={categoryFilter === 'kids' ? 'active' : ''} onClick={() => { handleFilterChange('category', 'kids'); handleFilterChange('brand', 'all') }}>
-                <span className="filter-emoji">🎈</span> Kids
-              </li>
-              <li className="filter-divider"></li>
-              <li>
-                <Link href="/catalog" style={{color: 'inherit', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px'}}>
-                  <span className="filter-emoji">📋</span> Catalog
-                </Link>
+                Kids
               </li>
             </ul>
           </div>
@@ -790,10 +821,19 @@ export default function Lookbook() {
       <main className="hero">
         {filteredDresses.length === 0 ? (
           <div className="no-results">
-            <div className="no-results-icon">😔</div>
+            <svg className="no-results-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
+              <line x1="9" y1="9" x2="9.01" y2="9"/>
+              <line x1="15" y1="9" x2="15.01" y2="9"/>
+            </svg>
             <p>No items found matching your filters.</p>
             <button className="reset-btn" onClick={() => { setCategoryFilter('all'); setBrandFilter('all'); setSizeFilter('all'); setSearchQuery(''); setCurrentIndex(0) }}>
-              🔄 Reset All Filters
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{display:'inline-block',verticalAlign:'middle',marginRight:'6px'}}>
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              </svg>
+              Reset All Filters
             </button>
           </div>
         ) : (
@@ -802,7 +842,16 @@ export default function Lookbook() {
             <div className="content-wrapper">
               {/* Background Selector */}
               <div className="background-selector">
-                <div className="bg-label">🎨 Background:</div>
+                <div className="bg-label">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'inline-block',verticalAlign:'middle',marginRight:'6px'}}>
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 2a10 10 0 0 0 0 20 4 4 0 0 1 0-8 10 10 0 0 0 0-12z"/>
+                    <circle cx="8" cy="12" r="1"/>
+                    <circle cx="12" cy="8" r="1"/>
+                    <circle cx="16" cy="12" r="1"/>
+                  </svg>
+                  Background:
+                </div>
                 <div className="bg-options">
                   {BACKGROUNDS.map(bg => (
                     <div
@@ -822,7 +871,12 @@ export default function Lookbook() {
                       title={bg.name}
                     >
                       {bg.isCustom ? (
-                        <span className="color-picker-icon">🎨</span>
+                        <span className="color-picker-icon">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 2a10 10 0 0 0 0 20 4 4 0 0 1 0-8 10 10 0 0 0 0-12z"/>
+                          </svg>
+                        </span>
                       ) : (
                         backgroundId === bg.id && <span className="bg-check">✓</span>
                       )}
@@ -870,7 +924,13 @@ export default function Lookbook() {
                   {/* Enhanced Carousel Thumbnail Gallery */}
                   <div className="carousel-wrapper">
                     <div className="carousel-header">
-                      <span className="carousel-title">📸 All Poses & Angles</span>
+                      <span className="carousel-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{display:'inline-block',verticalAlign:'middle',marginRight:'6px'}}>
+                          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                          <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                        All Poses & Angles
+                      </span>
                       <button 
                         className="carousel-toggle"
                         onClick={() => setShowAllThumbnails(!showAllThumbnails)}
@@ -916,7 +976,9 @@ export default function Lookbook() {
                 <div className="sidebar-header">
                   <h2 className="dress-title">
                     {currentDress.name}
-                    <span className="title-sparkle">✨</span>
+                    <svg className="title-sparkle" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polygon points="12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9"/>
+                    </svg>
                   </h2>
                   <div className="dress-brand-badge">{currentDress.brand}</div>
                 </div>
@@ -930,12 +992,22 @@ export default function Lookbook() {
                   </div>
                   {selectedSize && (
                     <div className="size-indicator">
-                      <span className="size-icon">📏</span> Size: {selectedSize}
+                      <svg className="size-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:'6px'}}>
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M3 9h18M9 3v18"/>
+                      </svg>
+                      Size: {selectedSize}
                     </div>
                   )}
                   {selectedColor && selectedColor !== currentDress.color && (
                     <div className="color-indicator">
-                      <span className="color-icon">🎨</span> Color: {selectedColor}
+                      <svg className="color-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:'6px'}}>
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="8" cy="12" r="1" fill="currentColor"/>
+                        <circle cx="12" cy="8" r="1" fill="currentColor"/>
+                        <circle cx="16" cy="12" r="1" fill="currentColor"/>
+                      </svg>
+                      Color: {selectedColor}
                     </div>
                   )}
                 </div>
@@ -943,7 +1015,10 @@ export default function Lookbook() {
                 {/* Camera View Selector */}
                 <div className="option-section">
                   <div className="option-label">
-                    <span className="label-icon">📷</span>
+                    <svg className="label-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                      <circle cx="12" cy="13" r="4"/>
+                    </svg>
                     Camera Angle
                   </div>
                   <div className="camera-buttons">
@@ -951,21 +1026,29 @@ export default function Lookbook() {
                       className={`camera-btn ${currentAngle === 'front' ? 'active' : ''}`}
                       onClick={() => changeAngle('front')}
                     >
-                      <span className="btn-icon">👁️</span>
+                      <svg className="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                      </svg>
                       Front
                     </button>
                     <button 
                       className={`camera-btn ${currentAngle === 'side' ? 'active' : ''}`}
                       onClick={() => changeAngle('side')}
                     >
-                      <span className="btn-icon">↔️</span>
+                      <svg className="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="17 11 12 6 7 11"/>
+                        <polyline points="7 13 12 18 17 13"/>
+                      </svg>
                       Side
                     </button>
                     <button 
                       className={`camera-btn ${currentAngle === 'back' ? 'active' : ''}`}
                       onClick={() => changeAngle('back')}
                     >
-                      <span className="btn-icon">🔙</span>
+                      <svg className="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                      </svg>
                       Back
                     </button>
                   </div>
@@ -975,7 +1058,10 @@ export default function Lookbook() {
                 {currentDress.availableSizes && currentDress.availableSizes.length > 0 && (
                   <div className="option-section">
                     <div className="option-label">
-                      <span className="label-icon">📐</span>
+                      <svg className="label-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M3 9h18M9 3v18M3 15h18M15 3v18"/>
+                      </svg>
                       Select Size
                     </div>
                     <div className="size-buttons">
@@ -996,7 +1082,10 @@ export default function Lookbook() {
                 {currentDress.availableColors && currentDress.availableColors.length > 0 && (
                   <div className="option-section">
                     <div className="option-label">
-                      <span className="label-icon">🌈</span>
+                      <svg className="label-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M8 12h8M10 8h4M10 16h4"/>
+                      </svg>
                       Available Colors
                     </div>
                     <div className="color-options">
@@ -1019,7 +1108,11 @@ export default function Lookbook() {
 
                 {/* Add to Cart */}
                 <button className="add-cart-btn-sidebar">
-                  <span className="cart-icon">🛒</span>
+                  <svg className="cart-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  </svg>
                   Add to Cart
                   <span className="cart-arrow">→</span>
                 </button>
@@ -1027,10 +1120,20 @@ export default function Lookbook() {
                 {/* Quick Actions */}
                 <div className="quick-actions">
                   <button className="quick-action-btn">
-                    <span>❤️</span> Wishlist
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{display:'inline-block',verticalAlign:'middle',marginRight:'4px'}}>
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    Wishlist
                   </button>
                   <button className="quick-action-btn">
-                    <span>📤</span> Share
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{display:'inline-block',verticalAlign:'middle',marginRight:'4px'}}>
+                      <circle cx="18" cy="5" r="3"/>
+                      <circle cx="6" cy="12" r="3"/>
+                      <circle cx="18" cy="19" r="3"/>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                    </svg>
+                    Share
                   </button>
                 </div>
               </div>
@@ -1043,7 +1146,17 @@ export default function Lookbook() {
       {/* Enhanced Footer */}
       <footer className="footer">
         <div className="footer-content">
-          <div className="footer-sparkles">✨ 🌟 ✨</div>
+          <div className="footer-sparkles">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{display:'inline-block'}}>
+              <polygon points="12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9"/>
+            </svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1" style={{display:'inline-block',margin:'0 8px'}}>
+              <polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.5 5.5 21 7 14 2 9.3 9 8.5"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{display:'inline-block'}}>
+              <polygon points="12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9"/>
+            </svg>
+          </div>
           <p className="footer-tagline">Humanizing Generative AI for Fashion Content Creation</p>
           <Link href="/" className="back">
             <span className="back-arrow">←</span> Back to Home
@@ -1057,7 +1170,16 @@ export default function Lookbook() {
           <div className="color-picker-overlay" onClick={() => setShowColorPicker(false)} />
           <div className="color-picker-modal">
             <div className="color-picker-header">
-              <span>🎨 Choose Your Color</span>
+              <span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{display:'inline-block',verticalAlign:'middle',marginRight:'8px'}}>
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 2a10 10 0 0 0 0 20 4 4 0 0 1 0-8 10 10 0 0 0 0-12z"/>
+                  <circle cx="8" cy="12" r="1" fill="currentColor"/>
+                  <circle cx="12" cy="8" r="1" fill="currentColor"/>
+                  <circle cx="16" cy="12" r="1" fill="currentColor"/>
+                </svg>
+                Choose Your Color
+              </span>
               <button className="close-picker" onClick={() => setShowColorPicker(false)}>✕</button>
             </div>
             <div className="color-picker-content">
@@ -1230,38 +1352,114 @@ export default function Lookbook() {
           padding: 16px 24px 12px;
           border-bottom: 1px solid rgba(102, 126, 234, 0.1);
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
+          align-items: center;
+          position: relative;
         }
         
-        .logo-link {
+        /* Home Button - Left */
+        .home-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 20px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 600;
           text-decoration: none;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
         
+        .home-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .home-btn svg {
+          transition: transform 0.3s ease;
+        }
+        
+        .home-btn:hover svg {
+          transform: translateX(-2px);
+        }
+        
+        /* Logo - Center */
         .logo-wrapper {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
           display: flex;
           align-items: center;
           gap: 12px;
-          cursor: pointer;
           transition: transform 0.3s ease;
         }
         
         .logo-wrapper:hover {
-          transform: scale(1.05);
+          transform: translateX(-50%) scale(1.05);
         }
         
         .logo-icon {
-          font-size: 36px;
+          width: 40px;
+          height: 40px;
+          color: #667eea;
           animation: float 3s ease-in-out infinite;
         }
         
+        .logo-text-container {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        
         .logo-text {
-          font-size: 28px;
+          font-size: 24px;
           font-weight: 900;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
           letter-spacing: -0.5px;
+          line-height: 1;
+        }
+        
+        .logo-subtitle {
+          font-size: 9px;
+          font-weight: 600;
+          color: #6b7280;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          line-height: 1;
+        }
+        
+        /* Catalog Button - Right */
+        .catalog-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 20px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          text-decoration: none;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 14px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+          position: absolute;
+          right: 24px;
+        }
+        
+        .catalog-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .catalog-btn svg {
+          width: 18px;
+          height: 18px;
         }
         
         /* Horizontal Filter Navigation */
@@ -2555,6 +2753,36 @@ export default function Lookbook() {
             padding: 12px 16px 10px;
           }
           
+          .home-btn,
+          .catalog-btn {
+            padding: 8px 12px;
+            font-size: 13px;
+            gap: 6px;
+          }
+          
+          .home-btn svg,
+          .catalog-btn svg {
+            width: 16px;
+            height: 16px;
+          }
+          
+          .logo-wrapper {
+            gap: 8px;
+          }
+          
+          .logo-icon {
+            width: 32px;
+            height: 32px;
+          }
+          
+          .logo-text {
+            font-size: 20px;
+          }
+          
+          .logo-subtitle {
+            font-size: 8px;
+          }
+          
           .logo-icon {
             font-size: 32px;
           }
@@ -2660,12 +2888,43 @@ export default function Lookbook() {
             padding: 10px 12px 8px;
           }
           
+          .home-btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            gap: 4px;
+          }
+          
+          .home-btn svg {
+            width: 14px;
+            height: 14px;
+          }
+          
+          .logo-wrapper {
+            gap: 6px;
+          }
+          
+          .logo-icon {
+            width: 28px;
+            height: 28px;
+          }
+          
           .logo-text {
-            font-size: 22px;
+            font-size: 18px;
+          }
+          
+          .logo-subtitle {
+            font-size: 7px;
           }
 
-          .logo-icon {
-            font-size: 28px;
+          .catalog-btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            gap: 4px;
+          }
+          
+          .catalog-btn svg {
+            width: 14px;
+            height: 14px;
           }
 
           .filter-items {
@@ -2855,6 +3114,40 @@ export default function Lookbook() {
         }
 
         @media (max-width: 400px) {
+          .logo-section {
+            padding: 8px 10px 6px;
+          }
+          
+          .home-btn span,
+          .catalog-btn span {
+            display: none;
+          }
+          
+          .home-btn,
+          .catalog-btn {
+            padding: 8px;
+            border-radius: 10px;
+          }
+          
+          .home-btn svg,
+          .catalog-btn svg {
+            width: 18px;
+            height: 18px;
+          }
+          
+          .logo-icon {
+            width: 24px;
+            height: 24px;
+          }
+          
+          .logo-text {
+            font-size: 16px;
+          }
+          
+          .logo-subtitle {
+            font-size: 6px;
+          }
+          
           .canvas {
             height: 320px;
           }
