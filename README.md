@@ -285,7 +285,7 @@ This project is open source and available under the MIT License.
 
 ## 👥 Team
 
-- **Project Lead:** Rahul Kannan
+- **Project Lead:** oussema
 - **Repository:** [github.com/rahulkannan08/lookwand](https://github.com/rahulkannan08/lookwand)
 
 ---
